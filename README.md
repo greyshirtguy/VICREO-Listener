@@ -16,14 +16,24 @@ On your client machine (the one you are sending commands from), send TCP string 
 
 Below you'll find a table of pre-installed commands that the listener will accept. Firt tell the program what kind of key you are going to send and than the key itself.
 
-| Action					| Description									| Example			|
-| --------------- | --------------------------- |-------------|
-| <SK>						| Single key									|; <SK>n  		|
+| Action					| Description									| Example								|
+| --------------- | --------------------------- |-----------------------|
+| <SK>						| Single key									|<SK>n  								|
+| <KCOMBO>	<AND>	| Key combination							|<KCOMBO>alt<AND>tab  	|
+| <KPRESS>				| Simulates key down					|<KPRESS>n					  	|
+| <KRELEASE>			| Simulates key up						|<KRELEASE>n				  	|
 
+The <KPRESS> and <KRELEASE> can be used for special cases, Example
+<KPRESS>ctrl
+<KPRESS>c
+<KRELEASE>c
+<KRELEASE>ctrl
+
+but above is the same as <KCOMBO>ctrl<AND>c
+
+``
 
 ## Error Codes
-
-The following table is from the PVP API documentation:
 
 | Error Code | Meaning                                                      |
 | ---------- | ------------------------------------------------------------ |
@@ -32,7 +42,40 @@ The following table is from the PVP API documentation:
 | 500        | Internal Server Error -- We had a problem with our server. Try again later. |
 | 503        | Service Unavailable -- We're temporarily offline for maintenance. Please try again later. |
 
+## Modifiers ##
 
+>The following modifier are supported:
+
+alt
+ctrl
+tab,
+shift
+cmd
+alt_gr
+backspace
+caps_lock
+end
+enter
+esc
+f1
+f2
+f3
+f4
+f5
+f6
+f7
+f8
+f9
+f10
+home
+insert
+left
+right
+up
+down
+num_lock
+page_up
+page_down
 
 ----
 
