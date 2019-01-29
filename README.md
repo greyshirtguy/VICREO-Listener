@@ -18,18 +18,18 @@ Below you'll find a table of pre-installed commands that the listener will accep
 
 | Action					| Description									| Example								|
 | --------------- | --------------------------- |-----------------------|
-| <SK>						| Single key									|<SK>n  								|
-| <KCOMBO>	<AND>	| Key combination							|<KCOMBO>alt<AND>tab  	|
-| <KPRESS>				| Simulates key down					|<KPRESS>n					  	|
-| <KRELEASE>			| Simulates key up						|<KRELEASE>n				  	|
+| &lt;SK&gt;						| Single key									|&lt;SK&gt;n  								|
+| &lt;KCOMBO&gt;	&lt;AND&gt;	| Key combination							|&lt;KCOMBO&gt;alt&lt;AND&gt;tab  	|
+| &lt;KPRESS&gt;				| Simulates key down					|&lt;KPRESS&gt;n					  	|
+| &lt;KRELEASE&gt;			| Simulates key up						|&lt;KRELEASE&gt;n				  	|
 
-The <KPRESS> and <KRELEASE> can be used for special cases, Example
-<KPRESS>ctrl
-<KPRESS>c
-<KRELEASE>c
-<KRELEASE>ctrl
+The &lt;KPRESS&gt; and &lt;KRELEASE&gt; can be used for special cases, Example
+&lt;KPRESS&gt;ctrl
+&lt;KPRESS&gt;c
+&lt;KRELEASE&gt;c
+&lt;KRELEASE&gt;ctrl
 
-but above is the same as <KCOMBO>ctrl<AND>c
+but above is the same as &lt;KCOMBO&gt;ctrl&lt;AND&gt;c
 
 ``
 
