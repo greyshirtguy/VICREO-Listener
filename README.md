@@ -32,7 +32,7 @@ The &lt;KPRESS&gt; and &lt;KRELEASE&gt; can be used for special cases, Example
 
 but above is the same as &lt;KCOMBO&gt;ctrl&lt;AND&gt;c
 
-``
+> Be aware there is a limit of 160 bytes to receive, this because of the &lt;MSG&gt; function
 
 ## Error Codes
 
