@@ -1,5 +1,6 @@
 # VICREO Listener
-
+<img src="https://img.shields.io/badge/made%20with-python-blue.svg" alt="made with python">
+<img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license"
 *Hotkey listener for windows & Mac*
 
 Go to [VICREO](http://vicreo.eu/listener/) for download.
@@ -22,13 +23,13 @@ Below you'll find a table of pre-installed commands that the listener will accep
 | &lt;KCOMBO&gt;	&lt;AND&gt;	| Key combination							|&lt;KCOMBO&gt;alt&lt;AND&gt;tab  	|
 | &lt;KPRESS&gt;				| Simulates key down					|&lt;KPRESS&gt;n					  	|
 | &lt;KRELEASE&gt;			| Simulates key up						|&lt;KRELEASE&gt;n				  	|
-| &lt;MSG&gt;						| Send message								|&lt;MSG&gt;Hello World (only strig message)		|
+| &lt;MSG&gt;						| Send message								|&lt;MSG&gt;Hello World (only string message)		|
 
-The &lt;KPRESS&gt; and &lt;KRELEASE&gt; can be used for special cases, Example
-&lt;KPRESS&gt;ctrl
-&lt;KPRESS&gt;c
-&lt;KRELEASE&gt;c
-&lt;KRELEASE&gt;ctrl
+The &lt;KPRESS&gt; and &lt;KRELEASE&gt; can be used for special cases, Example;<br>
+&lt;KPRESS&gt;ctrl<br>
+&lt;KPRESS&gt;c<br>
+&lt;KRELEASE&gt;c<br>
+&lt;KRELEASE&gt;ctrl<br>
 
 but above is the same as &lt;KCOMBO&gt;ctrl&lt;AND&gt;c
 
@@ -49,11 +50,13 @@ but above is the same as &lt;KCOMBO&gt;ctrl&lt;AND&gt;c
 
 alt
 ctrl
-tab,
+tab
 shift
 cmd
 alt_gr
+delete
 backspace
+space
 caps_lock
 end
 enter
@@ -68,6 +71,8 @@ f7
 f8
 f9
 f10
+f11
+f12
 home
 insert
 left
@@ -80,4 +85,4 @@ page_down
 
 ----
 
-For additional actions, please raise a feature request on [GitHub](https://github.com/jeffreydavidsz/VICREO-Listener/).
+For additional actions, please raise a feature request on [GitHub](https://github.com/JeffreyDavidsz/VICREO-Listener/issues).
