@@ -1,24 +1,19 @@
-from pynput.keyboard import Key, Controller
+# running app in systray
+from infi.systray import SysTrayIcon
+# running plyer for notifications
+from plyer import notification
+showNotification = True
+# TCP handling
 import socket
 import sys
-
+#keyboard
+from pynput.keyboard import Key, Controller
 keyboard = Controller()
 
-# Create a TCP/IP socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+def pressAndRelease(key):
+	keyboard.press(key)
+	keyboard.release(key)
 
-# Bind the socket to the port
-server_address = ('localhost', 10001)
-print('starting up on %s port %s' % server_address)
-sock.bind(server_address)
-
-# Listen for incoming connections
-sock.listen(1)
-
-#only for testing
-connectionUP = True
-
-#logic and variables
 #https://pynput.readthedocs.io/en/latest/keyboard.html#pynput.keyboard.Key
 modifier = {
 	'alt': Key.alt,
@@ -27,6 +22,8 @@ modifier = {
 	'shift': Key.shift,
 	'cmd': Key.cmd,
 	'alt_gr': Key.alt_gr,
+	'delete': Key.delete,
+	'space': Key.space,
 	'backspace': Key.backspace,
 	'caps_lock': Key.caps_lock,
 	'end': Key.end,
@@ -42,6 +39,8 @@ modifier = {
 	'f8': Key.f8,
 	'f9': Key.f9,
 	'f10': Key.f10,
+	'f11': Key.f11,
+	'f12': Key.f12,
 	'home': Key.home,
 	'insert': Key.insert,
 	'left': Key.left,
@@ -53,78 +52,149 @@ modifier = {
 	'page_down': Key.page_down
 	}
 
-def pressAndRelease(key):
-	keyboard.press(key)
-	keyboard.release(key)
+#Start main function
+_FINISH = True
 
-while connectionUP:
-	# Wait for a connection
-	print('waiting for a connection')
-	connection, client_address = sock.accept()
+# Create a TCP/IP socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Bind the socket to the port
+server_address = ('localhost', 10001)
+print('starting up on %s port %s' % server_address)
+sock.bind(server_address)
+
+# Listen for incoming connections
+sock.listen(1)
+
+def sendNotification(message):
+	notification.notify(
+		title='Listener says;',
+		message=message,
+		app_name='VICREO Listener',
+		app_icon='icon.ico'
+	)
+
+#systray functions
+def on_quit_callback(systray):
+	print('shutdown program from menu')
+	global _FINISH
+	_FINISH = False
+	global sock
 	try:
-		print('connection from', client_address)
+		sock.close()
+	except:
+		print('work on this!!')
+def do_nothing(sysTrayIcon):
+	pass
+def toggle_notifications(systray):
+	global showNotification
+	if showNotification:
+		sendNotification('bye bye')
+		showNotification = False
+	else:
+		showNotification = True
+		sendNotification('Notification on')
 
-		# Receive the data and retransmit it
-		while True:
-			data = connection.recv(1024)
-			if data:
-				tcpString = data.decode()
-				print('Receiving: ', tcpString)
+menu_options = (("Listening to port 10001", None, do_nothing),
+				("Toggle notifications", None, toggle_notifications))
 
-				# Single key command
-				if tcpString[0:4] == '<SK>':
-					pressAndRelease(tcpString[4])
-				#combination of two keys
-				elif tcpString[0:8] == '<KCOMBO>':
-					#find first command
-					command1 = tcpString[8:tcpString.index('<AND>')]
-					if len(command1)>1:
-						command1 = modifier.get(command1.lower(), 'err')
-					#find second
-					command2 = tcpString[tcpString.index('<AND>')+5:]
-					if len(command2)>1:
-						command2 = modifier.get(command2.lower(), 'err')
+if showNotification:
+	sendNotification('Welcome')
 
-					#if no error send the keycombo
-					if command1 != 'err' and command2 != 'err':
-						print('modifier: ', command1)
-						keyboard.press(command1)
-						keyboard.press(command2)
-						keyboard.release(command2)
-						keyboard.release(command1)
-					else:
-						print('wrong key')
+with SysTrayIcon("icon.ico", "VICREO Key listener", menu_options, on_quit=on_quit_callback) as systray:
+	while _FINISH:
+		# Wait for a connection
+		print('waiting for a connection')
+		connection, client_address = sock.accept()
 
-				#only key down
-				elif tcpString[0:8] == '<KPRESS>':
-					pressed = tcpString[8:]
-					if len(pressed)>1:
-						pressed = modifier.get(pressed.lower(), 'err')
-					if pressed != 'err':
-						keyboard.press(pressed)
-					else:
-						print('wrong key')
+		try:
+			# Receive the data and retransmit it
+			print('connection from', client_address)
+			while _FINISH:
+				data = connection.recv(160)
+				if data:
+					tcpString = data.decode()
+					print('Receiving: ', tcpString)
+					# Single key command
+					if tcpString[0:4] == '<SK>':
+						pressAndRelease(tcpString[4])
+					#Special key
+					elif tcpString[0:5] == '<SPK>':
+						specialKey = tcpString[5:]
+						specialKey = modifier.get(specialKey.lower(), 'err')
+						if specialKey != 'err':
+							pressAndRelease(specialKey)
+						else:
+							print('wrong key')
+					#combination of two keys
+					elif tcpString[0:8] == '<KCOMBO>':
+						#find first command
+						command1 = tcpString[8:tcpString.index('<AND>')]
+						if len(command1)>1:
+							command1 = modifier.get(command1.lower(), 'err')
+						#find second
+						command2 = tcpString[tcpString.index('<AND>')+5:]
+						if len(command2)>1:
+							command2 = modifier.get(command2.lower(), 'err')
 
-				#only key up
-				elif tcpString[0:10] == '<KRELEASE>':
-					released = tcpString[10:]
-					if len(released)>1:
-						released = modifier.get(released.lower(), 'err')
-					if released != 'err':
-						keyboard.release(released)
-					else:
-						print('wrong key')
+						#if no error send the keycombo
+						if command1 != 'err' and command2 != 'err':
+							keyboard.press(command1)
+							keyboard.press(command2)
+							keyboard.release(command2)
+							keyboard.release(command1)
+						else:
+							print('wrong key')
 
-				print('sending data back to the client')
-				msg = 'done'
-				connection.sendall(msg.encode())
-				#only for testing
-				#connectionUP = False
-			else:
-				print('no more data from', client_address)
-				break
+					#only key down
+					elif tcpString[0:8] == '<KPRESS>':
+						pressed = tcpString[8:]
+						if len(pressed)>1:
+							pressed = modifier.get(pressed.lower(), 'err')
+						if pressed != 'err':
+							keyboard.press(pressed)
+						else:
+							print('wrong key')
 
-	finally:
-		# Clean up the connection
-		print('closing connection')
-		connection.close()
+					#only key up
+					elif tcpString[0:10] == '<KRELEASE>':
+						released = tcpString[10:]
+						if len(released)>1:
+							released = modifier.get(released.lower(), 'err')
+						if released != 'err':
+							keyboard.release(released)
+						else:
+							print('wrong key')
+
+					#send message
+					elif tcpString[0:5] == '<MSG>':
+						try:
+							keyboard.type(tcpString[5:])
+						except:
+							  print("NOT ALLOWED")
+
+					#only for testing/debug
+					elif tcpString[0:6] == '<STOP>':
+						print('oh oh somebody send stop')
+						print('sending some data back to the client')
+						msg = 'You have closed the application'
+						connection.sendall(msg.encode())
+						_FINISH = False
+
+					print('sending some data back to the client')
+					msg = 'done'
+					connection.sendall(msg.encode())
+					if showNotification:
+						sendNotification(tcpString)
+
+				else:
+					print('no more data from', client_address)
+					break
+
+		finally:
+			# Clean up the connection
+			print('finalize this transmition')
+			connection.close()
+
+print('shutdown program in progress')
+#input for compiler
