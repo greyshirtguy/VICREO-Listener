@@ -1,6 +1,7 @@
 # VICREO Listener
 <img src="https://img.shields.io/badge/made%20with-python-blue.svg" alt="made with python">
-<img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license"
+<img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
+<img src="https://img.shields.io/github/tag/expressjs/express.svg" alt="tag">
 *Hotkey listener for windows & Mac*
 
 Go to [VICREO](http://vicreo.eu/listener/) for download.
