@@ -4,7 +4,7 @@
 
 *Hotkey listener for windows & Mac*
 
-Go to [VICREO](http://vicreo.eu/listener/) for download.
+Go to [VICREO releases](https://github.com/JeffreyDavidsz/VICREO-Listener/releases) for download.
 
 >  VICREO Listener is a small program that sits on your machine waiting for incomming TCP connection/commands. It uses pre-defined commands to simulate keypresses on your machine. You can use this program to preform hotkey actions from remote
 
@@ -83,6 +83,10 @@ down
 num_lock
 page_up
 page_down
+
+## Build your own?
+
+pyinstaller -y -F -w -i "PATH/icon.ico" --add-data "PATH/icon.ico";"." --hidden-import infi.systray --hidden-import pkg_resources --hidden-import plyer.platforms.win.notification "PATH/VICREO_Listener.py"
 
 ----
 
