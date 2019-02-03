@@ -8,6 +8,8 @@ Go to [VICREO releases](https://github.com/JeffreyDavidsz/VICREO-Listener/releas
 
 >  VICREO Listener is a small program that sits on your machine waiting for incomming TCP connection/commands. It uses pre-defined commands to simulate keypresses on your machine. You can use this program to preform hotkey actions from remote
 
+<img src="https://bitfocus.io/companion/badge.png?ref=vicreo" alt="Controllable by Companion">
+
 ## Installation
 
 Download the right software package for your operating system and launch the program on the machine you would like to control (host).
