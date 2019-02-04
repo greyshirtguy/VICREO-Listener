@@ -2,7 +2,7 @@
 from infi.systray import SysTrayIcon
 # running plyer for notifications
 from plyer import notification
-showNotification = True
+showNotification = False
 # TCP handling
 import socket
 import sys
@@ -53,18 +53,7 @@ modifier = {
 	}
 
 #Start main function
-_FINISH = True
-
-# Create a TCP/IP socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-# Bind the socket to the port
-server_address = ('localhost', 10001)
-print('starting up on %s port %s' % server_address)
-sock.bind(server_address)
-
-# Listen for incoming connections
-sock.listen(1)
+_LOOP = True
 
 def sendNotification(message):
 	notification.notify(
@@ -77,13 +66,7 @@ def sendNotification(message):
 #systray functions
 def on_quit_callback(systray):
 	print('shutdown program from menu')
-	global _FINISH
-	_FINISH = False
-	global sock
-	try:
-		sock.close()
-	except:
-		print('work on this!!')
+	_LOOP = False
 def do_nothing(sysTrayIcon):
 	pass
 def toggle_notifications(systray):
@@ -98,11 +81,19 @@ def toggle_notifications(systray):
 menu_options = (("Listening to port 10001", None, do_nothing),
 				("Toggle notifications", None, toggle_notifications))
 
-if showNotification:
-	sendNotification('Welcome')
+sendNotification('Welcome')
+
+# Create a TCP/IP socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# Bind the socket to the port
+server_address = ('localhost', 10001)
+print('starting up on %s port %s' % server_address)
+sock.bind(server_address)
+# Listen for incoming connections
+sock.listen(1)
 
 with SysTrayIcon("icon.ico", "VICREO Key listener", menu_options, on_quit=on_quit_callback) as systray:
-	while _FINISH:
+	while _LOOP:
 		# Wait for a connection
 		print('waiting for a connection')
 		connection, client_address = sock.accept()
@@ -110,7 +101,7 @@ with SysTrayIcon("icon.ico", "VICREO Key listener", menu_options, on_quit=on_qui
 		try:
 			# Receive the data and retransmit it
 			print('connection from', client_address)
-			while _FINISH:
+			while _LOOP:
 				data = connection.recv(160)
 				if data:
 					tcpString = data.decode()
@@ -175,14 +166,12 @@ with SysTrayIcon("icon.ico", "VICREO Key listener", menu_options, on_quit=on_qui
 
 					#only for testing/debug
 					elif tcpString[0:6] == '<STOP>':
-						print('oh oh somebody send stop')
-						print('sending some data back to the client')
 						msg = 'You have closed the application'
 						connection.sendall(msg.encode())
-						_FINISH = False
+						_LOOP = False
 
 					print('sending some data back to the client')
-					msg = 'done'
+					msg = 'ok'
 					connection.sendall(msg.encode())
 					if showNotification:
 						sendNotification(tcpString)
@@ -196,5 +185,4 @@ with SysTrayIcon("icon.ico", "VICREO Key listener", menu_options, on_quit=on_qui
 			print('finalize this transmition')
 			connection.close()
 
-print('shutdown program in progress')
-#input for compiler
+print('shutdown program')
