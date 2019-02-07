@@ -27,6 +27,7 @@ Below you'll find a table of pre-installed commands that the listener will accep
 | &lt;KPRESS&gt;				| Simulates key down					|&lt;KPRESS&gt;n					  	|
 | &lt;KRELEASE&gt;			| Simulates key up						|&lt;KRELEASE&gt;n				  	|
 | &lt;MSG&gt;						| Send message								|&lt;MSG&gt;Hello World (only string message)		|
+| &lt;FILE&gt;					| Open file (complete path)		|&lt;FILE&gt;c:\user\test\test.bat
 
 The &lt;KPRESS&gt; and &lt;KRELEASE&gt; can be used for special cases, Example;<br>
 &lt;KPRESS&gt;ctrl<br>
@@ -38,14 +39,7 @@ but above is the same as &lt;KCOMBO&gt;ctrl&lt;AND&gt;c
 
 > Be aware there is a limit of 160 bytes to receive, this because of the &lt;MSG&gt; function
 
-## Error Codes
-
-| Error Code | Meaning                                                      |
-| ---------- | ------------------------------------------------------------ |
-| 400        | Bad Request -- Your request was invalid.                     |
-| 405        | Method Not Allowed -- You tried to access an endpoint with an invalid method. |
-| 500        | Internal Server Error -- We had a problem with our server. Try again later. |
-| 503        | Service Unavailable -- We're temporarily offline for maintenance. Please try again later. |
+> Make sure you use the backslash in the file open command
 
 ## Modifiers ##
 
