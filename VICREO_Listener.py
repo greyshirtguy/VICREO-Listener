@@ -6,6 +6,8 @@ showNotification = False
 # TCP handling
 import socket
 import sys
+# file handling
+import os
 #keyboard
 from pynput.keyboard import Key, Controller
 keyboard = Controller()
@@ -62,6 +64,8 @@ def sendNotification(message):
 		app_name='VICREO Listener',
 		app_icon='icon.ico'
 	)
+def openFile(path):
+	os.startfile(path)
 
 #systray functions
 def on_quit_callback(systray):
@@ -162,7 +166,14 @@ with SysTrayIcon("icon.ico", "VICREO Key listener", menu_options, on_quit=on_qui
 						try:
 							keyboard.type(tcpString[5:])
 						except:
-							  print("NOT ALLOWED")
+							print("NOT ALLOWED")
+
+					#open file
+					elif tcpString[0:6] == '<FILE>':
+						try:
+							openFile(tcpString[6:])
+						except:
+							print("error")
 
 					#only for testing/debug
 					elif tcpString[0:6] == '<STOP>':
