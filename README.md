@@ -71,18 +71,14 @@ f10
 f11
 f12
 home
-insert
+insert (only windows)
 left
 right
 up
 down
-num_lock
+num_lock (only windows)
 page_up
 page_down
-
-## Build your own?
-
-pyinstaller -y -F -w -i "PATH/icon.ico" --add-data "PATH/icon.ico";"." --hidden-import infi.systray --hidden-import pkg_resources --hidden-import plyer.platforms.win.notification "PATH/VICREO_Listener.py"
 
 ----
 
