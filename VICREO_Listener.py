@@ -61,8 +61,7 @@ def sendNotification(message):
 	notification.notify(
 		title='Listener says;',
 		message=message,
-		app_name='VICREO Listener',
-		app_icon='icon.ico'
+		app_name='VICREO Listener'
 	)
 def openFile(path):
 	os.startfile(path)
@@ -90,7 +89,7 @@ sendNotification('Welcome')
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # Bind the socket to the port
-server_address = ('localhost', 10001)
+server_address = ('', 10001)
 print('starting up on %s port %s' % server_address)
 sock.bind(server_address)
 # Listen for incoming connections
