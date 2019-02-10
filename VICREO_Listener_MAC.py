@@ -58,11 +58,11 @@ def openFile(path):
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # Bind the socket to the port
-server_address = ('localhost', 10001)
-print('starting up on %s port %s' % server_address)
+server_address = ('', 10001)
+print('Listening to port 10001')
 sock.bind(server_address)
 # Listen for incoming connections
-sock.listen(1)
+sock.listen(3)
 
 while _LOOP:
 	# Wait for a connection
@@ -148,7 +148,6 @@ while _LOOP:
 					connection.sendall(msg.encode())
 					_LOOP = False
 
-				print('sending some data back to the client')
 				msg = 'ok'
 				connection.sendall(msg.encode())
 
