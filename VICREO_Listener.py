@@ -127,7 +127,7 @@ with SysTrayIcon("icon.ico", "VICREO Key listener", menu_options, on_quit=on_qui
 						if len(command1)>1:
 							command1 = modifier.get(command1.lower(), 'err')
 						#find second
-						command2 = tcpString[tcpString.index('<AND>')+5:]
+						command2 = tcpString[tcpString.index('<AND>')+5:].rstrip()
 						if len(command2)>1:
 							command2 = modifier.get(command2.lower(), 'err')
 
