@@ -39,12 +39,10 @@ modifier = {
 	'f11': Key.f11,
 	'f12': Key.f12,
 	'home': Key.home,
-#	'insert': Key.insert,
 	'left': Key.left,
 	'right': Key.right,
 	'up': Key.up,
 	'down': Key.down,
-#	'num_lock': Key.num_lock,
 	'page_up': Key.page_up,
 	'page_down': Key.page_down
 	}
@@ -62,7 +60,7 @@ server_address = ('', 10001)
 print('Listening to port 10001')
 sock.bind(server_address)
 # Listen for incoming connections
-sock.listen(3)
+sock.listen(1)
 
 while _LOOP:
 	# Wait for a connection
@@ -79,7 +77,15 @@ while _LOOP:
 				print('Receiving: ', tcpString)
 				# Single key command
 				if tcpString[0:4] == '<SK>':
-					pressAndRelease(tcpString[4])
+					#somehow on mac capital letters returns: a
+					sendedKey = tcpString[4]
+					if sendedKey.isupper():
+						keyboard.press(Key.shift)
+						keyboard.press(sendedKey.lower())
+						keyboard.release(sendedKey.lower())
+						keyboard.release(Key.shift)
+					else:
+						pressAndRelease(sendedKey)
 				#Special key
 				elif tcpString[0:5] == '<SPK>':
 					specialKey = tcpString[5:]
@@ -95,7 +101,7 @@ while _LOOP:
 					if len(command1)>1:
 						command1 = modifier.get(command1.lower(), 'err')
 					#find second
-					command2 = tcpString[tcpString.index('<AND>')+5:]
+					command2 = tcpString[tcpString.index('<AND>')+5:].rstrip()
 					if len(command2)>1:
 						command2 = modifier.get(command2.lower(), 'err')
 
