@@ -83,9 +83,9 @@ page_down
 
 ## FAQ ##
 
-For mac, when the executable opens as a textfile. chmod +x <yourfile>
+For mac, when the executable opens as a textfile. chmod +x &lt;yourfile&gt;,
 it will make it excecutable.
-  
+
 ----
 
 For additional actions, please raise a feature request on [GitHub](https://github.com/JeffreyDavidsz/VICREO-Listener/issues).
