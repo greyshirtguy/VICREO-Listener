@@ -81,6 +81,11 @@ num_lock (only windows)
 page_up
 page_down
 
+## FAQ ##
+
+For mac, when the executable opens as a textfile. chmod +x <yourfile>
+it will make it excecutable.
+  
 ----
 
 For additional actions, please raise a feature request on [GitHub](https://github.com/JeffreyDavidsz/VICREO-Listener/issues).
