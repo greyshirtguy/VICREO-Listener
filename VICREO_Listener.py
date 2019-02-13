@@ -69,7 +69,11 @@ def openFile(path):
 #systray functions
 def on_quit_callback(systray):
 	print('shutdown program from menu')
+	global _LOOP
 	_LOOP = False
+	# jump out of the socket wait state (Socket block execution, while waiting for a new connection)
+	socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect(('localhost', 10001))
+	sock.close()
 def do_nothing(sysTrayIcon):
 	pass
 def toggle_notifications(systray):
