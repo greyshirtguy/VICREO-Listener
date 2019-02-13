@@ -1,6 +1,6 @@
 # VICREO Listener
 <img src="https://img.shields.io/badge/made%20with-python-blue.svg" alt="made with python">
-<img src="https://img.shields.io/github/size/JeffreyDavidsz/VICREO-Listener/VICREO_Listener.py.svg?style=flat" alt="script size">
+<img src="https://img.shields.io/github/repo-size/jeffreydavidsz/VICREO-Listener.svg?style=flat" alt="repo size">
 <img src="https://img.shields.io/github/release/jeffreydavidsz/vicreo-listener.svg?style=flat" alt="current release">
 
 *Hotkey listener for windows & Mac*
@@ -9,7 +9,7 @@ Go to [VICREO releases](https://github.com/JeffreyDavidsz/VICREO-Listener/releas
 
 >  VICREO Listener is a small program that sits on your machine waiting for incomming TCP connection/commands. It uses pre-defined commands to simulate keypresses on your machine. You can use this program to preform hotkey actions from remote
 
-<img src="https://bitfocus.io/companion/badge.png?ref=vicreo" alt="Controllable by Companion">
+[<img src="https://bitfocus.io/companion/badge.png?ref=vicreo" style="width:200px;" alt="Controllable by Companion">](https://bitfocus.io/companion/)
 
 ## Installation
 
