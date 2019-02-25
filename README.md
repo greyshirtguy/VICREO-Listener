@@ -5,6 +5,9 @@
 
 *Hotkey listener for windows & Mac*
 
+Latest [Windows release](https://github.com/JeffreyDavidsz/VICREO-Listener/releases/download/v1.2.3/VICREO_Listener_Windows.exe)
+Latest [OSX release](https://github.com/JeffreyDavidsz/VICREO-Listener/releases/download/v1.2.3/VICREO_Listener_OSX)
+
 Go to [VICREO releases](https://github.com/JeffreyDavidsz/VICREO-Listener/releases) for download.
 
 >  VICREO Listener is a small program that sits on your machine waiting for incomming TCP connection/commands. It uses pre-defined commands to simulate keypresses on your machine. You can use this program to preform hotkey actions from remote
