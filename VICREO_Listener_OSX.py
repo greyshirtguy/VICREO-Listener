@@ -114,30 +114,30 @@ while _LOOP:
 					else:
 						print('wrong key')
 
-					#combination of three keys
-					elif tcpString[0:7] == '<KTRIO>':
-						#find first command
-						command1 = tcpString[7:tcpString.index('<AND>')]
-						if len(command1)>1:
-							command1 = modifier.get(command1.lower(), 'err')
-						command2 = tcpString[tcpString.index('<AND>')+5:tcpString.index('<AND2>')]
-						if len(command2)>1:
-							command2 = modifier.get(command2.lower(), 'err')
-						#find third
-						command3 = tcpString[tcpString.index('<AND2>')+6:].rstrip()
-						if len(command3)>1:
-							command3 = modifier.get(command3.lower(), 'err')
+				#combination of three keys
+				elif tcpString[0:7] == '<KTRIO>':
+					#find first command
+					command1 = tcpString[7:tcpString.index('<AND>')]
+					if len(command1)>1:
+						command1 = modifier.get(command1.lower(), 'err')
+					command2 = tcpString[tcpString.index('<AND>')+5:tcpString.index('<AND2>')]
+					if len(command2)>1:
+						command2 = modifier.get(command2.lower(), 'err')
+					#find third
+					command3 = tcpString[tcpString.index('<AND2>')+6:].rstrip()
+					if len(command3)>1:
+						command3 = modifier.get(command3.lower(), 'err')
 
-						#if no error send the keycombo
-						if command1 != 'err' and command2 != 'err' and command3 != 'err':
-							keyboard.press(command1)
-							keyboard.press(command2)
-							keyboard.press(command3)
-							keyboard.release(command3)
-							keyboard.release(command2)
-							keyboard.release(command1)
-						else:
-							print('wrong key')
+					#if no error send the keycombo
+					if command1 != 'err' and command2 != 'err' and command3 != 'err':
+						keyboard.press(command1)
+						keyboard.press(command2)
+						keyboard.press(command3)
+						keyboard.release(command3)
+						keyboard.release(command2)
+						keyboard.release(command1)
+					else:
+						print('wrong key')
 
 				#only key down
 				elif tcpString[0:8] == '<KPRESS>':
