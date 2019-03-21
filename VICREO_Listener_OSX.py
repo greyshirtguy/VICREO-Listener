@@ -3,6 +3,7 @@ import socket
 import sys
 # file handling
 import os
+import subprocess
 #keyboard
 from pynput.keyboard import Key, Controller
 keyboard = Controller()
@@ -51,7 +52,17 @@ modifier = {
 _LOOP = True
 
 def openFile(path):
-	os.startfile(path)
+	path = path.replace('\\', '/')
+	path = path.strip()
+	if sys.platform.find('darwin') >= 0:
+		print('darwin', path)
+		subprocess.call(['open', path])
+	elif sys.platform.find('linux') >= 0:
+		print('linux')
+		subprocess.call(['xdg-open', path])
+	else:
+		print('something else')
+		os.startfile(path)
 
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
