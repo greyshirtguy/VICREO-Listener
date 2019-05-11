@@ -87,8 +87,8 @@ page_down
 
 ## FAQ ##
 
-For mac, when the executable opens as a textfile. chmod +x &lt;yourfile&gt;,
-it will make it excecutable.
+For mac, when the executable opens as a textfile. Open a terminal (cmd + space and type terminal)and: chmod +x &lt;yourfile&gt;,
+it will make it excecutable. You can drag the file into the terminal for the full path.
 
 For mac, when you need the path of a file, right-click on the file and when you see the menu, press and hold Alt to be able to copy the full path.
 
