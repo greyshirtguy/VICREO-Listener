@@ -11,6 +11,18 @@ import time
 from pynput.keyboard import Key, Controller
 keyboard = Controller()
 
+def resource_path(relative_path):
+	""" Get absolute path to resource, works for dev and for PyInstaller """
+	try:
+		# PyInstaller creates a temp folder and stores path in _MEIPASS
+		base_path = sys._MEIPASS
+	except Exception:
+		base_path = os.path.abspath(".")
+
+		return os.path.join(base_path, relative_path)
+
+Logo = resource_path("icon.icns")
+
 rumps.debug_mode(False) # turn on command line logging information for development - default is off
 
 from threading import Thread
@@ -34,7 +46,7 @@ def myRumps():
 
 	app = rumps.App("VICREO Listener", title='VICREO')
 	app.menu = [
-		rumps.MenuItem('About', icon='icon.ico', dimensions=(18, 18)),  # can specify an icon to be placed near text
+		rumps.MenuItem('About', icon=Logo, dimensions=(18, 18)),  # can specify an icon to be placed near text
 		None
 	]
 	app.run()
