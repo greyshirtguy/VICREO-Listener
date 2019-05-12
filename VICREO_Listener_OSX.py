@@ -11,6 +11,10 @@ import time
 from pynput.keyboard import Key, Controller
 keyboard = Controller()
 
+def pressAndRelease(key):
+	keyboard.press(key)
+	keyboard.release(key)
+
 def resource_path(relative_path):
 	""" Get absolute path to resource, works for dev and for PyInstaller """
 	try:
