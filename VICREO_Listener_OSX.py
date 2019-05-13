@@ -89,7 +89,15 @@ def myListener():
 		'up': Key.up,
 		'down': Key.down,
 		'page_up': Key.page_up,
-		'page_down': Key.page_down
+		'page_down': Key.page_down,
+		'cmd_l': Key.cmd_l,
+		'cmd_r': Key.cmd_r,
+		'ctrl_l': Key.ctrl_l,
+		'ctrl_r': Key.ctrl_r,
+		'alt_l': Key.alt_l,
+		'alt_r': Key.alt_r,
+		'shift_l': Key.shift_l,
+		'shift_r': Key.shift_r
 		}
 
 
