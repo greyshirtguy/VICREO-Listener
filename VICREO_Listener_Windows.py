@@ -16,6 +16,10 @@ def pressAndRelease(key):
 	keyboard.press(key)
 	keyboard.release(key)
 
+# Fetching temp path from executable
+base_path = getattr(sys, '_MEIPASS','.')+'\\'
+Logo = base_path+'icon.ico'
+
 #https://pynput.readthedocs.io/en/latest/keyboard.html#pynput.keyboard.Key
 modifier = {
 	'alt': Key.alt,
@@ -51,7 +55,18 @@ modifier = {
 	'down': Key.down,
 	'num_lock': Key.num_lock,
 	'page_up': Key.page_up,
-	'page_down': Key.page_down
+	'page_down': Key.page_down,
+	'cmd_l': Key.cmd_l,
+	'cmd_r': Key.cmd_r,
+	'ctrl_l': Key.ctrl_l,
+	'ctrl_r': Key.ctrl_r,
+	'alt_l': Key.alt_l,
+	'alt_r': Key.alt_r,
+	'pause': Key.pause,
+	'print_screen': Key.print_screen,
+	'scroll_lock': Key.scroll_lock,
+	'shift_l': Key.shift_l,
+	'shift_r': Key.shift_r
 	}
 
 #Start main function
@@ -99,7 +114,7 @@ sock.bind(server_address)
 # Listen for incoming connections
 sock.listen(1)
 
-with SysTrayIcon("icon.ico", "VICREO Key listener", menu_options, on_quit=on_quit_callback) as systray:
+with SysTrayIcon(Logo, "VICREO Key listener", menu_options, on_quit=on_quit_callback) as systray:
 	while _LOOP:
 		# Wait for a connection
 		print('waiting for a connection')
