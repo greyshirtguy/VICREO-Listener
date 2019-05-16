@@ -11,10 +11,6 @@ import time
 from pynput.keyboard import Key, Controller
 keyboard = Controller()
 
-def pressAndRelease(key):
-	keyboard.press(key)
-	keyboard.release(key)
-
 def resource_path(relative_path):
 	""" Get absolute path to resource, works for dev and for PyInstaller """
 	try:
@@ -36,6 +32,13 @@ def myRumps():
 	def about(sender):
 		rumps.alert("Welcome at the VICREO Listener")
 
+	@rumps.clicked("Quit app")
+	def quit(sender):
+		global _LOOP
+		_LOOP = False
+		print("Quit from menu")
+		rumps.quit_application()
+
 	@rumps.notifications
 	def notifications(notification):  # function that reacts to incoming notification dicts
 		print(notification)
@@ -47,8 +50,10 @@ def myRumps():
 	app = rumps.App("VICREO Listener", title='VICREO')
 	app.menu = [
 		rumps.MenuItem('About', icon=Logo, dimensions=(18, 18)),  # can specify an icon to be placed near text
-		None
+		None,
+		rumps.MenuItem('Quit app')
 	]
+	app.quit_button = None
 	app.run()
 
 def myListener():
