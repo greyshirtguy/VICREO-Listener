@@ -44,10 +44,6 @@ def myRumps():
 	def onebitcallback(sender):  # functions don't have to be decorated to serve as callbacks for buttons
 		print(4848484) # this function is specified as a callback when creating a MenuItem below
 
-	def pressAndRelease(key):
-		keyboard.press(key)
-		keyboard.release(key)
-
 	app = rumps.App("VICREO Listener", title='VICREO')
 	app.menu = [
 		rumps.MenuItem('About', icon=Logo, dimensions=(18, 18)),  # can specify an icon to be placed near text
@@ -56,6 +52,11 @@ def myRumps():
 	app.run()
 
 def myListener():
+
+	def pressAndRelease(key):
+		keyboard.press(key)
+		keyboard.release(key)
+
 	#https://pynput.readthedocs.io/en/latest/keyboard.html#pynput.keyboard.Key
 	modifier = {
 		'alt': Key.alt,
@@ -162,6 +163,31 @@ def myListener():
 						if command1 != 'err' and command2 != 'err':
 							keyboard.press(command1)
 							keyboard.press(command2)
+							keyboard.release(command2)
+							keyboard.release(command1)
+						else:
+							print('wrong key')
+
+					#combination of three keys
+					elif tcpString[0:7] == '<KTRIO>':
+						#find first command
+						command1 = tcpString[7:tcpString.index('<AND>')]
+						if len(command1)>1:
+							command1 = modifier.get(command1.lower(), 'err')
+						command2 = tcpString[tcpString.index('<AND>')+5:tcpString.index('<AND2>')]
+						if len(command2)>1:
+							command2 = modifier.get(command2.lower(), 'err')
+						#find third
+						command3 = tcpString[tcpString.index('<AND2>')+6:].rstrip()
+						if len(command3)>1:
+							command3 = modifier.get(command3.lower(), 'err')
+
+						#if no error send the keycombo
+						if command1 != 'err' and command2 != 'err' and command3 != 'err':
+							keyboard.press(command1)
+							keyboard.press(command2)
+							keyboard.press(command3)
+							keyboard.release(command3)
 							keyboard.release(command2)
 							keyboard.release(command1)
 						else:
