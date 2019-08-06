@@ -3,6 +3,7 @@ import socket
 import sys
 # file handling
 import os
+import subprocess
 #RUMPS for menu
 import rumps
 import time
@@ -110,7 +111,8 @@ def myListener():
 	_LOOP = True
 
 	def openFile(path):
-		os.startfile(path)
+		opener ="open" if sys.platform == "darwin" else "xdg-open"
+		subprocess.call([opener, path])
 
 	# Create a TCP/IP socket
 	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
