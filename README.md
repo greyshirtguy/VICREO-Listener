@@ -5,8 +5,8 @@
 
 *Hotkey listener for windows & Mac*
 
-Latest [Windows release](https://github.com/JeffreyDavidsz/VICREO-Listener/releases/download/v1.3.0/VICREO_Listener_Windows.exe)
-Latest [OSX release](https://github.com/JeffreyDavidsz/VICREO-Listener/releases/download/v1.3.0/VICREO_Listener_OSX.zip)
+Latest [Windows release](https://github.com/JeffreyDavidsz/VICREO-Listener/releases/download/v1.3.1/VICREO_Listener_Windows.exe)
+Latest [OSX release](https://github.com/JeffreyDavidsz/VICREO-Listener/releases/download/v1.3.1/VICREO_Listener_OSX.zip)
 
 Go to [VICREO releases](https://github.com/JeffreyDavidsz/VICREO-Listener/releases) for download.
 
