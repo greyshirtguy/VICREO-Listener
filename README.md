@@ -26,7 +26,8 @@ Below you'll find a table of pre-installed commands that the listener will accep
 
 | Action					| Description									| Example								|
 | --------------- | --------------------------- |-----------------------|
-| &lt;SK&gt;						| Single key									|&lt;SK&gt;n  								|
+| &lt;SK&gt;						| Single key								|&lt;SK&gt;n  								|
+| &lt;SKP&gt;						| Special key (modifier)		|&lt;SKP&gt;enter 								|
 | &lt;KCOMBO&gt;	&lt;AND&gt;	| Key combination							|&lt;KCOMBO&gt;alt&lt;AND&gt;tab  	|
 | &lt;KTRIO&gt;	&lt;AND&gt;	&lt;AND2&gt;	| Key trio combination							|&lt;KCOMBO&gt;ctrl&lt;AND&gt;shift&lt;AND2&gt;d  	|
 | &lt;KPRESS&gt;				| Simulates key down					|&lt;KPRESS&gt;n					  	|
