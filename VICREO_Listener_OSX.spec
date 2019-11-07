@@ -23,7 +23,7 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,
           [],
-          name='VICREO_Listener_OSX',
+          name='VICREO Listener',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
@@ -31,6 +31,13 @@ exe = EXE(pyz,
           runtime_tmpdir=None,
           console=False)
 app = BUNDLE(exe,
-             name='VICREO_Listener_OSX.app',
+             name='VICREO Listener.app',
              icon='/Users/jeffreydavidsz/VICREO-Listener/icon.icns',
-             bundle_identifier=None)
+             bundle_identifier=None,
+             info_plist={
+                'LSUIElement': 'True',
+                'NSHighResolutionCapable': 'True',
+                'CFBundleShortVersionString': '1.3.2',
+                'NSHumanReadableCopyright': 'Copyright © 2019, Jeffrey Davidsz. All rights reserved.'
+            },
+        )
