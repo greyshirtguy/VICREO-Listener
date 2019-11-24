@@ -44,7 +44,7 @@ The &lt;KPRESS&gt; and &lt;KRELEASE&gt; can be used for special cases, Example;<
 
 but above is the same as &lt;KCOMBO&gt;ctrl&lt;AND&gt;c
 
-## <SKE> (MacOS Only) - Notes ##
+## &lt;SKE&gt; (MacOS Only) - Notes ##
 The &lt;SKE&gt;	&lt;PROCESS&gt; &lt;AND&gt;	&lt;AND2&gt; (MacOS only) command will send a keypress event directly to a specific process identified by name (Process name does not have to be complete).
 Please note that this works through a quite different mechanism than the other commands and it is MacOS only. You will rarely need this command as the other commands to send Keys are likely to do what you need.  This command can help if you need to send hotkeys to an application running in the background.
 This command is virtually replicating physical keyboard events with actual keyboard keys identified by KeyCode (It is NOT sending characters/letters of your language like the other Key commands).
