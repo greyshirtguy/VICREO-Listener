@@ -34,6 +34,7 @@ Below you'll find a table of pre-installed commands that the listener will accep
 | &lt;KRELEASE&gt;			| Simulates key up						|&lt;KRELEASE&gt;n				  	|
 | &lt;MSG&gt;						| Send message								|&lt;MSG&gt;Hello World (only string message)		|
 | &lt;FILE&gt;					| Open file (complete path)		|&lt;FILE&gt;c:\user\test\test.bat
+| &lt;SKE&gt;	&lt;PROCESS&gt; &lt;AND&gt;	&lt;AND2&gt;	| (MacOS ONLY) - Send KeyPress Event to Process	|&lt;SKE&gt;0x12&lt;PROCESS&gt;propresenter&lt;AND&gt;cmd&lt;AND2&gt;none
 
 The &lt;KPRESS&gt; and &lt;KRELEASE&gt; can be used for special cases, Example;<br>
 &lt;KPRESS&gt;ctrl<br>
@@ -42,6 +43,13 @@ The &lt;KPRESS&gt; and &lt;KRELEASE&gt; can be used for special cases, Example;<
 &lt;KRELEASE&gt;ctrl<br>
 
 but above is the same as &lt;KCOMBO&gt;ctrl&lt;AND&gt;c
+
+The &lt;SKE&gt;	&lt;PROCESS&gt; &lt;AND&gt;	&lt;AND2&gt; (MacOS only) command will send a keypress event directly to a specific process identified by name (Process name does not have to be complete).
+Please note that this works through a quite different mechanism than the other commands and it is MacOS only. You will rarely need this command as the other commands to send Keys are likely to do what you need.  This command can help if you need to send hotkeys to an application running in the background.
+This command is virtually replicating physical keyboard events with actual keyboard keys identified by KeyCode (It is NOT sending characters/letters of your language like the other Key commands).
+For example, if you send keycode 0 and have a US keyboard as your current input, that will be like pressing the key with A on it. If your keyboard is Greek, then the KeyCode 0 will be like typing α. Think of it as pressing a physical key in a specific location on a keyboard, rather than typing a character of your language.  You can lookup MacOS keyboard keycodes online or refer to the map of the US keyboard below:
+TODO: insert image of US Mac keyboard with KeyCodes
+Also, note that the events are directed at the running process itself (Not the foreground application, window or control). This means it is possible to send these events to applications running in the background.  However, depending on how the application is processing keyboard input, this only works in very *limited* cases.  - It will most likely work for application-wide hotkeys. Your mileage may vary.
 
 > Be aware there is a limit of 160 bytes to receive, this because of the &lt;MSG&gt; function
 

@@ -69,7 +69,7 @@ def myListener():
 				pid = proc.info['pid']
 				print('got process', pid)
 		if pid > 0:
-			event_flags = 0	
+			event_flags = 0
 			if modifier1 == "shift" or modifier2 == "shift":
 				event_flags += Quartz.kCGEventFlagMaskShift
 			if modifier1 == "alt" or modifier2 == "alt":
@@ -80,9 +80,10 @@ def myListener():
 				event_flags += Quartz.kCGEventFlagMaskCommand
 
 			keyDownEvent = Quartz.CGEventCreateKeyboardEvent(objc.NULL, keycode, True)
-			Quartz.CGEventSetFlags(keyDownEvent, Quartz.kCGEventFlagMaskCommand)
 			keyUpEvent = Quartz.CGEventCreateKeyboardEvent(objc.NULL, keycode, False)
-			Quartz.CGEventSetFlags(keyUpEvent, Quartz.kCGEventFlagMaskCommand)
+			if event_flags > 0:
+				Quartz.CGEventSetFlags(keyDownEvent, Quartz.kCGEventFlagMaskCommand)
+				Quartz.CGEventSetFlags(keyUpEvent, Quartz.kCGEventFlagMaskCommand)
 			Quartz.CGEventPostToPid(pid, keyDownEvent)
 			#TODO: consider a time.sleep(0.01) here
 			Quartz.CGEventPostToPid(pid, keyUpEvent)
