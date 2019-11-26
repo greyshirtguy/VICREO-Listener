@@ -22,7 +22,7 @@ On your client machine (the one you are sending commands from), send TCP string 
 
 ## Usage
 
-Below you'll find a table of pre-installed commands that the listener will accept. Firt tell the program what kind of key you are going to send and than the key itself.
+Below you'll find a table of pre-installed commands that the listener will accept. First tell the program what kind of key you are going to send and than the key itself.
 
 | Action					| Description									| Example								|
 | --------------- | --------------------------- |-----------------------|
@@ -34,7 +34,7 @@ Below you'll find a table of pre-installed commands that the listener will accep
 | &lt;KRELEASE&gt;			| Simulates key up						|&lt;KRELEASE&gt;n				  	|
 | &lt;MSG&gt;						| Send message								|&lt;MSG&gt;Hello World (only string message)		|
 | &lt;FILE&gt;					| Open file (complete path)		|&lt;FILE&gt;c:\user\test\test.bat
-| &lt;SKE&gt;	&lt;PROCESS&gt; &lt;AND&gt;	&lt;AND2&gt;	| (MacOS ONLY) - Send KeyPress Event to Process	|&lt;SKE&gt;0x12&lt;PROCESS&gt;propresenter&lt;AND&gt;cmd&lt;AND2&gt;none
+| &lt;SKE&gt;	&lt;PROCESS&gt; &lt;AND&gt;	&lt;AND2&gt;	| (MacOS ONLY) - Send KeyPress Event to Process with optional modifiers	|&lt;SKE&gt;0x12&lt;PROCESS&gt;propresenter&lt;AND&gt;cmd&lt;AND2&gt;none
 
 The &lt;KPRESS&gt; and &lt;KRELEASE&gt; can be used for special cases, Example;<br>
 &lt;KPRESS&gt;ctrl<br>
