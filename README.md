@@ -49,9 +49,9 @@ The **&lt;SKE&gt;*keyCode*&lt;PROCESS&gt;*processSearchString*&lt;AND&gt;*option
 
 Please note that this works through a quite different mechanism than the other commands and it is MacOS only. You won't often need this command - as the other commands to type Keys are likely to do what you need.  However, this command can help if you need to send keystrokes to an application running in the background.
 
-This command is virtually sending physical keyboard events with the keys identified by a KeyCode. You must give the keyboard keycode - not the character/letter being typed.
+Please note that you will need to add the VICREO Listener application to the list of "Allow the app below to control your computer" in the Privacy section of Security & Privacy MacOS system settings.
 
-Also note that you will need to add the VICREO Listener application to the list of "Allow the app below to control your computer" in the Privacy section of Security & Privacy MacOS system settings.
+This command is virtually sending physical keyboard events with the keys identified by a KeyCode. You must give the keyboard keycode - not the character/letter being typed.
 
 For example, if you send keycode 0 and your computer is setup to use a US keyboard as your current input, that will be like pressing the key with the letter **A** on it. If however, your keyboard is Greek, then sending KeyCode 0 will be like typing the letter **α**. Think of it as pressing a physical key in a specific location on a keyboard.  You can lookup MacOS keyboard keycodes online or refer to the map of the US keyboard below:
 ![KeyCodes](Apple%20Keyboard%20KeyCodes.jpg)
