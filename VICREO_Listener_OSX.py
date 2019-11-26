@@ -82,8 +82,8 @@ def myListener():
 			keyDownEvent = Quartz.CGEventCreateKeyboardEvent(objc.NULL, keycode, True)
 			keyUpEvent = Quartz.CGEventCreateKeyboardEvent(objc.NULL, keycode, False)
 			if event_flags > 0:
-				Quartz.CGEventSetFlags(keyDownEvent, Quartz.kCGEventFlagMaskCommand)
-				Quartz.CGEventSetFlags(keyUpEvent, Quartz.kCGEventFlagMaskCommand)
+				Quartz.CGEventSetFlags(keyDownEvent, event_flags)
+				Quartz.CGEventSetFlags(keyUpEvent, event_flags)
 			Quartz.CGEventPostToPid(pid, keyDownEvent)
 			#TODO: consider a time.sleep(0.01) here
 			Quartz.CGEventPostToPid(pid, keyUpEvent)
