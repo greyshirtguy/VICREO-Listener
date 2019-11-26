@@ -51,6 +51,8 @@ Please note that this works through a quite different mechanism than the other c
 
 This command is virtually sending physical keyboard events with the keys identified by a KeyCode. You must give the keyboard keycode - not the character/letter being typed.
 
+Also note that you will need to add the VICREO Listener application to the list of "Allow the app below to control your computer" in the Privacy section of Security & Privacy MacOS system settings.
+
 For example, if you send keycode 0 and your computer is setup to use a US keyboard as your current input, that will be like pressing the key with the letter **A** on it. If however, your keyboard is Greek, then sending KeyCode 0 will be like typing the letter **α**. Think of it as pressing a physical key in a specific location on a keyboard.  You can lookup MacOS keyboard keycodes online or refer to the map of the US keyboard below:
 ![KeyCodes](Apple%20Keyboard%20KeyCodes.jpg)
 The map above shows the hex keycodes in green (you can also send the decimal equivilant if you like).
