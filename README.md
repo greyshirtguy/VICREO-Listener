@@ -51,12 +51,12 @@ Please note that this works through a quite different mechanism than the other c
 
 Please note that you will need to add the VICREO Listener application to the list of "Allow the app below to control your computer" in the Privacy section of Security & Privacy MacOS system settings.
 
-This command is virtually sending physical keyboard events with the keys identified by a KeyCode. You must give the keyboard keycode - not the character/letter being typed.
+This command is virtually sending physical keyboard events with the keys identified by a KeyCode. You must send the keyboard keycode - not the character/letter being typed.
 
-For example, if you send keycode 0 and your computer is setup to use a US keyboard as your current input, that will be like pressing the key with the letter **A** on it. If however, your keyboard is Greek, then sending KeyCode 0 will be like typing the letter **α**. Think of it as pressing a physical key in a specific location on a keyboard.  You can lookup MacOS keyboard keycodes online or refer to the map of the US keyboard below:
+For example, if you send keycode 0x00 and your computer is setup to use a US keyboard as your current input, that will be like pressing the key with the letter **A** on it. If however, your keyboard is Greek, then sending KeyCode 0x00 will be like typing the letter **α**. Think of it as pressing a physical key in a specific location on a keyboard.  You can lookup MacOS keyboard keycodes online or refer to the map of the US keyboard below:
 ![KeyCodes](Apple%20Keyboard%20KeyCodes.jpg)
-The map above shows the hex keycodes in green (you can also send the decimal equivilant if you like).
-Generally, keyboards for other languages will have the **same KeyCodes for keys in the same locations** - they just have different letters printed on them.
+The US language keyboad map above shows the hex keycodes in green (*you can also send the decimal equivalent if you prefer*).
+Generally, keyboards for other languages will have the **same KeyCodes for physical keys in the same locations on a keyboard** - they just have different letters printed on them.  This means you can "overlay" any other language keyboard on the US keyboard to find the right keycode you want for other languages.  
 
 Also, note that the events are directed at the running process itself (Not the foreground application, Window or Text Control). This means it is possible to send these keyboard events to applications running in the background on MacOS.  However, depending on how the application is processing keyboard input, **this only works in very limited cases.** 
 It will most likely work for application-wide hotkeys. See how your application responds - your mileage may vary.
