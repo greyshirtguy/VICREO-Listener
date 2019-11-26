@@ -46,6 +46,7 @@ but above is the same as &lt;KCOMBO&gt;ctrl&lt;AND&gt;c
 
 ## &lt;SKE&gt; (MacOS Only) - Notes ##
 The **&lt;SKE&gt;*keyCode*&lt;PROCESS&gt;*processSearchString*&lt;AND&gt;*optionalModifierKey1*&lt;AND2&gt;*optionalModifierKey2*** command (MacOS only) will send a keyboard keypress event directly to a specific process found by searching for any process matching \*processSearchString\* with up to two optional modifiers: none|alt|ctrl|cmd|shift.
+You can find an applications process name by check the CPU pane of MacOS Activity Monitor. 
 
 Please note that this works through a very different mechanism than the other commands in VICREO-Listener and it is **MacOS only.** You won't often need this command - as the other commands to type Keys are likely to do what you need.  However, this command can help if you need to send keystrokes to an application running in the background.
 
