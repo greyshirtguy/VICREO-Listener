@@ -7,6 +7,10 @@ import subprocess
 #RUMPS for menu
 import rumps
 import time
+# Quartz, objc, psutil - are used for sending MacOS Keyboard Events to specific processes
+import Quartz
+import objc
+import psutil
 
 #keyboard
 from pynput.keyboard import Key, Controller
@@ -58,6 +62,31 @@ def myRumps():
 	app.run()
 
 def myListener():
+	def sendKeyboardEventToProcessByName(keycode, process_name_search_string, modifier1, modifier2):
+		pid = -1
+		for proc in psutil.process_iter(attrs=['pid', 'name']):
+			if process_name_search_string.lower() in proc.info['name'].lower():
+				pid = proc.info['pid']
+				print('got process', pid)
+		if pid > 0:
+			event_flags = 0
+			if modifier1 == "shift" or modifier2 == "shift":
+				event_flags += Quartz.kCGEventFlagMaskShift
+			if modifier1 == "alt" or modifier2 == "alt":
+				event_flags += Quartz.kCGEventFlagMaskAlternate
+			if modifier1 == "ctrl" or modifier2 == "ctrl":
+				event_flags += Quartz.kCGEventFlagMaskControl
+			if modifier1 == "cmd" or modifier2 == "cmd":
+				event_flags += Quartz.kCGEventFlagMaskCommand
+
+			keyDownEvent = Quartz.CGEventCreateKeyboardEvent(objc.NULL, keycode, True)
+			keyUpEvent = Quartz.CGEventCreateKeyboardEvent(objc.NULL, keycode, False)
+			if event_flags > 0:
+				Quartz.CGEventSetFlags(keyDownEvent, event_flags)
+				Quartz.CGEventSetFlags(keyUpEvent, event_flags)
+			Quartz.CGEventPostToPid(pid, keyDownEvent)
+			#TODO: consider a time.sleep(0.01) here
+			Quartz.CGEventPostToPid(pid, keyUpEvent)
 
 	def pressAndRelease(key):
 		keyboard.press(key)
@@ -155,6 +184,18 @@ def myListener():
 							pressAndRelease(specialKey)
 						else:
 							print('wrong key')
+					#Keyboard Event to process (looks for first process containing processSearchString)
+					#TODO: consider separate events for down and up???
+					elif tcpString[0:5] == '<SKE>' and tcpString.find('<PROCESS>') > 5 and tcpString.find('<AND>') > 14 and tcpString.find('<AND2>') > 19: # make sure command is complete with all four parts (VirtualKeyCode, ProcessSearchString, Modifier1, Modifier2)
+						keyCode = int(tcpString[5:tcpString.index('<PROCESS>')],0) # using base 0 will invoke base automatic "guessing" - (0x prefix will be assumed hex, otherwise just digits will be assumed base 10.)
+						processSearchString = tcpString[tcpString.index('<PROCESS>')+9:tcpString.index('<AND>')].rstrip()
+						modifier1 = tcpString[tcpString.index('<AND>')+5:tcpString.index('<AND2>')]
+						modifier2 = tcpString[tcpString.index('<AND2>')+6:].rstrip()
+						print(keyCode, processSearchString, modifier1, modifier2)
+						if keyCode >= 0 and keyCode <= 128:
+							sendKeyboardEventToProcessByName(keyCode, processSearchString, modifier1, modifier2)
+						else:
+							print('Invalid keycode')
 					#combination of two keys
 					elif tcpString[0:8] == '<KCOMBO>':
 						#find first command

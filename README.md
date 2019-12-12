@@ -22,7 +22,7 @@ On your client machine (the one you are sending commands from), send TCP string 
 
 ## Usage
 
-Below you'll find a table of pre-installed commands that the listener will accept. Firt tell the program what kind of key you are going to send and than the key itself.
+Below you'll find a table of pre-installed commands that the listener will accept. First tell the program what kind of key you are going to send and than the key itself.
 
 | Action					| Description									| Example								|
 | --------------- | --------------------------- |-----------------------|
@@ -34,6 +34,7 @@ Below you'll find a table of pre-installed commands that the listener will accep
 | &lt;KRELEASE&gt;			| Simulates key up						|&lt;KRELEASE&gt;n				  	|
 | &lt;MSG&gt;						| Send message								|&lt;MSG&gt;Hello World (only string message)		|
 | &lt;FILE&gt;					| Open file (complete path)		|&lt;FILE&gt;c:\user\test\test.bat
+| &lt;SKE&gt;	&lt;PROCESS&gt; &lt;AND&gt;	&lt;AND2&gt;	| (MacOS ONLY) - Send KeyPress Event to Process with optional modifiers	|&lt;SKE&gt;0x12&lt;PROCESS&gt;propresenter&lt;AND&gt;cmd&lt;AND2&gt;none
 
 The &lt;KPRESS&gt; and &lt;KRELEASE&gt; can be used for special cases, Example;<br>
 &lt;KPRESS&gt;ctrl<br>
@@ -42,6 +43,25 @@ The &lt;KPRESS&gt; and &lt;KRELEASE&gt; can be used for special cases, Example;<
 &lt;KRELEASE&gt;ctrl<br>
 
 but above is the same as &lt;KCOMBO&gt;ctrl&lt;AND&gt;c
+
+## &lt;SKE&gt; (MacOS Only) - Notes ##
+The **&lt;SKE&gt;*keyCode*&lt;PROCESS&gt;*processSearchString*&lt;AND&gt;*optionalModifierKey1*&lt;AND2&gt;*optionalModifierKey2*** command (MacOS only) will send a keyboard keypress event directly to a specific process found by searching for any process matching \*processSearchString\* with up to two optional modifiers: none|alt|ctrl|cmd|shift.
+
+Tip: You can find an applications exact process name by checking the list in the CPU pane of MacOS Activity Monitor.
+
+Please note that this works through a very different mechanism than the other commands in VICREO-Listener and it is **MacOS only.** You won't often need this command - as the other commands to type Keys are likely to do what you need.  However, this command can help if you need to send keystrokes to an application running in the background.
+
+Please also note that you will need to add the VICREO Listener application to the list of "Allow the app below to control your computer" in the Privacy section of Security & Privacy MacOS system settings.
+
+This command is virtually sending physical keyboard events with the keys identified by a KeyCode. You must send the keyboard keycode - not the character/letter being typed.
+
+For example, if you send keycode 0x00 and your computer is setup to use a US keyboard as your current input, that will be like pressing the key with the letter **A** on it. If however, your keyboard is Greek, then sending KeyCode 0x00 will be like typing the letter **α**. Think of it as pressing a physical key in a specific location on a keyboard.  You can lookup MacOS keyboard keycodes online or refer to the map of the US keyboard below:
+![KeyCodes](Apple%20Keyboard%20KeyCodes.jpg)
+The US language keyboad map above shows the hex keycodes in green (*you can also send the decimal equivalent if you prefer*).
+Generally, keyboards for other languages will have the **same KeyCodes for physical keys in the same locations on a keyboard** - they just have different letters printed on them.  This means you can "overlay" any other language keyboard on the US keyboard to find the right keycode you want for other languages.  
+
+Also, note that the events are directed at the running process itself (Not the foreground application, Window or Text Control). This means it is possible to send these keyboard events to applications running in the background on MacOS.  However, depending on how the application is processing keyboard input, **this only works in very limited cases.** 
+It will most likely work for application-wide hotkeys. See how your application responds - your mileage may vary.
 
 > Be aware there is a limit of 160 bytes to receive, this because of the &lt;MSG&gt; function
 
