@@ -31,7 +31,7 @@ from threading import Thread
 def myRumps():
 	@rumps.clicked("About")
 	def about(sender):
-		rumps.alert("Welcome at the VICREO Listener")
+		rumps.alert("Welcome at the VICREO Listener v1.40")
 
 	@rumps.clicked("Quit app")
 	def quit(sender):
