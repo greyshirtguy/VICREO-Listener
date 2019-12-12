@@ -37,7 +37,7 @@ app = BUNDLE(exe,
              info_plist={
                 'LSUIElement': 'True',
                 'NSHighResolutionCapable': 'True',
-                'CFBundleShortVersionString': '1.3.2',
+                'CFBundleShortVersionString': '1.4.0',
                 'NSHumanReadableCopyright': 'Copyright © 2019, Jeffrey Davidsz. All rights reserved.'
             },
         )

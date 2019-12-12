@@ -1,5 +1,7 @@
 output/icon.ico
+build
+dist
+__pycache__
 VICREO_Client.py
 VICREO_stop_listener.py
 *.bat
-icon.ico
