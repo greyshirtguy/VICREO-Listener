@@ -6,8 +6,7 @@
 *Hotkey listener for windows & Mac*
 
 Latest [Windows release](https://github.com/JeffreyDavidsz/VICREO-Listener/releases/download/v1.3.1/VICREO_Listener_Windows.exe)
-Latest [OSX release](https://github.com/JeffreyDavidsz/VICREO-Listener/releases/download/v1.4.0/VICREO_Listener_OSX.zip)
-
+Latest [OSX release](https://github.com/JeffreyDavidsz/VICREO-Listener/releases/download/V1.4.0/VICREO_Listener_OSX.zip)
 Go to [VICREO releases](https://github.com/JeffreyDavidsz/VICREO-Listener/releases) for download.
 
 >  VICREO Listener is a small program that sits on your machine waiting for incomming TCP connection/commands. It uses pre-defined commands to simulate keypresses on your machine. You can use this program to preform hotkey actions from remote
@@ -60,7 +59,7 @@ For example, if you send keycode 0x00 and your computer is setup to use a US key
 The US language keyboad map above shows the hex keycodes in green (*you can also send the decimal equivalent if you prefer*).
 Generally, keyboards for other languages will have the **same KeyCodes for physical keys in the same locations on a keyboard** - they just have different letters printed on them.  This means you can "overlay" any other language keyboard on the US keyboard to find the right keycode you want for other languages.  
 
-Also, note that the events are directed at the running process itself (Not the foreground application, Window or Text Control). This means it is possible to send these keyboard events to applications running in the background on MacOS.  However, depending on how the application is processing keyboard input, **this only works in very limited cases.** 
+Also, note that the events are directed at the running process itself (Not the foreground application, Window or Text Control). This means it is possible to send these keyboard events to applications running in the background on MacOS.  However, depending on how the application is processing keyboard input, **this only works in very limited cases.**
 It will most likely work for application-wide hotkeys. See how your application responds - your mileage may vary.
 
 > Be aware there is a limit of 160 bytes to receive, this because of the &lt;MSG&gt; function
@@ -109,6 +108,8 @@ page_down
 ## FAQ ##
 
 For mac, when you need the path of a file, right-click on the file and when you see the menu, press and hold Alt to be able to copy the full path.
+
+Want to run it yourself? build it with PyInstaller and use the spec file.
 
 ----
 
