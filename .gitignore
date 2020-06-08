@@ -1,4 +1,6 @@
-VICREO_Client.py
-build
-dist
-__pycache__
+node_modules/
+dist/
+.vscode/
+.DS_Store
+.eslintrc
+.env

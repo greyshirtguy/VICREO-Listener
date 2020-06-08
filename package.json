@@ -1,0 +1,51 @@
+{
+	"name": "vicreo",
+	"version": "1.0.0",
+	"description": "Vicreo listener in electron",
+	"main": "main.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "electron .",
+		"devstart": "electromon ./main.js",
+		"pack": "electron-builder --dir",
+		"release": "electron-builder -p always",
+		"macdist": "electron-builder --mac",
+		"windist": "electron-builder --win",
+		"lindist": "electron-builder --linux tar.gz",
+		"rpidist": "electron-builder --armv7l --linux tar.gz",
+		"postinstall": "electron-builder install-app-deps"
+	},
+	"build": {
+		"appId": "nl.vicreo.listener",
+		"mac": {
+			"category": "Keyboard emulator"
+		},
+		"win": {
+			"icon": "img/logo.png"
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/JeffreyDavidsz/vicreo-listener.git"
+	},
+	"keywords": [
+		"Keyboard",
+		"mouse"
+	],
+	"author": "Jeffrey Davidsz",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/JeffreyDavidsz/vicreo-listener/issues"
+	},
+	"homepage": "https://github.com/JeffreyDavidsz/vicreo-listener#readme",
+	"dependencies": {
+		"dotenv": "^8.2.0",
+		"robotjs": "^0.6.0"
+	},
+	"devDependencies": {
+		"electromon": "^1.0.10",
+		"electron": "^9.0.2",
+		"electron-builder": "^21.2.0",
+		"electron-rebuild": "^1.11.0"
+	}
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Vicreo Listener</title>
+
+		<!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+		<meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+		<style>
+			body {
+				background-color: rgb(0, 0, 0);
+				background-image: url("./img/logo.png");
+				background-repeat: no-repeat;
+				background-attachment: fixed;
+				background-position: center;
+				color: rgba(255, 255, 255, 0.5);
+			}
+
+		</style>
+	</head>
+		<h1>Welcome!</h1>
+		We are using node <script>document.write(process.versions.node)</script>,
+		Chrome <script>document.write(process.versions.chrome)</script>,
+		and Electron <script>document.write(process.versions.electron)</script>.
+	</body>
+</html>
