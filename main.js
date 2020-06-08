@@ -1,6 +1,6 @@
 /* eslint no-console: 'off' */
 if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
+	require('dotenv').config();
 }
 const { app, BrowserWindow, Menu, Tray } = require("electron") // app
 const net = require("net") // TCP server
@@ -13,7 +13,7 @@ var iconpath = path.join(__dirname, 'img/favicon.ico')
 let server
 let win
 let port = 10001;
-var cmd = '{ "key":"tab", "type":"press", "modifiers":["alt"] }'
+// var cmd = '{ "key":"tab", "type":"press", "modifiers":["alt"] }'
 // var cmd = '{ "key":"tab", "type":"processOSX","processName":"Powerpoint" "modifier":["alt"] }'
 // var cmd = '{ "type":"shell","shell":"dir" }'
 // var cmd = '{ "type":"file","path":"C:/Barco/InfoT1413.pdf" }'
@@ -22,7 +22,7 @@ var cmd = '{ "key":"tab", "type":"press", "modifiers":["alt"] }'
 function createWindow() {
 	// create window
 	win = new BrowserWindow({
-		width: 800,
+		width: 410,
 		height: 600,
 		icon: iconpath,
 		webPreferences: {
@@ -42,9 +42,8 @@ function createWindow() {
 				app.isQuiting = true;
 				server.close()
 				console.log('user quit')
-        app.quit();
-				// win.destroy()
-				// app.quit()
+				app.quit();
+				win.destroy()
 			}
 		}
 	])
@@ -79,8 +78,22 @@ function createWindow() {
 		win = null
 	})
 
+
 	createListener()
 }
+
+// Catch messages from front-ed.
+const { ipcMain } = require('electron')
+ipcMain.on('asynchronous-message', (event, arg) => {
+	console.log(arg)
+	if (arg != port) {
+		port = arg;
+		console.log('port number changed, closing server');
+		createListener();
+		event.reply('asynchronous-reply', 'ok')
+	}
+})
+
 
 app.on('ready', createWindow)
 
@@ -109,11 +122,16 @@ app.on('activate', () => {
 function createListener() {
 	// Load socket
 	console.log('waiting for connection...')
-	// TEST BELLOW
-	// processIncomingData(JSON.parse(cmd))
+	portInUse(port, function (returnValue) {
+		console.log('Port already active?', returnValue);
+	});
+}
 
+var portInUse = function (port, callback) {
+	console.log('port', port)
 	server = net.createServer((socket) => {
 		socket.write('Listener active\r\n');
+		socket.pipe(socket);
 		console.log("connected")
 		socket.on('end', () => {
 			console.log('client ended connection, waiting for connection...')
@@ -129,12 +147,20 @@ function createListener() {
 				processIncomingData2(data)
 			}
 		})
-	})
-	server.listen(port, '127.0.0.1')
-}
+		server.on('error', function (e) {
+			callback(true);
+		});
+		server.on('listening', function (e) {
+			server.close();
+			callback(false);
+		});
+	});
+	server.listen(port, '127.0.0.1');
+
+};
 
 function processIncomingData(data) {
-
+	console.log(data)
 	switch (data.type) {
 		case 'press':
 			robot.keyTap(data.key, data.modifiers)

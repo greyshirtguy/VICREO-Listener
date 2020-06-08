@@ -12,15 +12,34 @@
 				background-image: url("./img/logo.png");
 				background-repeat: no-repeat;
 				background-attachment: fixed;
-				background-position: center;
-				color: rgba(255, 255, 255, 0.5);
+				background-position: bottom;
+				color: rgba(255, 255, 255, 0.9);
 			}
 
 		</style>
 	</head>
 		<h1>Welcome!</h1>
-		We are using node <script>document.write(process.versions.node)</script>,
-		Chrome <script>document.write(process.versions.chrome)</script>,
-		and Electron <script>document.write(process.versions.electron)</script>.
+		<p>You can easily close this screen, it will hold in the system tray (on Windows) or in the upper menu (OSX)</p>
+		<p>The listener will listen to port 10001 in default, but you can change it here;</p>
+			<h3>Port number</h3>
+			 <input id="port" class="form-control text-input" value="10001">
+			 <input id="changebtn" type="button" value="Change">
 	</body>
 </html>
+
+<script>
+	// In renderer process (web page).
+	const { ipcRenderer } = require('electron')
+	// console.log(ipcRenderer.sendSync('synchronous-message', 'ping')) // prints "pong"
+
+	ipcRenderer.on('asynchronous-reply', (event, arg) => {
+		console.log(arg) // prints "pong"
+	})
+
+	document.getElementById("changebtn").addEventListener("click", function(){
+		var port = document.getElementById("port").value;
+			// document.getElementById("demo").innerHTML = "Hello World";
+			ipcRenderer.send('asynchronous-message', port)
+		}); 
+
+</script>
