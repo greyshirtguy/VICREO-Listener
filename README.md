@@ -1,13 +1,8 @@
 # VICREO Listener
-<img src="https://img.shields.io/badge/made%20with-python-blue.svg" alt="made with python">
-<img src="https://img.shields.io/github/repo-size/jeffreydavidsz/VICREO-Listener.svg?style=flat" alt="repo size">
-<img src="https://img.shields.io/github/release/jeffreydavidsz/vicreo-listener.svg?style=flat" alt="current release">
 
-*Hotkey listener for windows & Mac*
+*Hotkey listener for windows, Mac and Linux*
 
-Latest [Windows release](https://github.com/JeffreyDavidsz/VICREO-Listener/releases/download/v1.3.1/VICREO_Listener_Windows.exe)
-Latest [OSX release](https://github.com/JeffreyDavidsz/VICREO-Listener/releases/download/v1.4.0/VICREO_Listener_OSX.zip)
-Go to [VICREO releases](https://github.com/JeffreyDavidsz/VICREO-Listener/releases) for download.
+Go to [VICREO releases](https://github.com/JeffreyDavidsz/VICREO-listener-electron/releases) for download.
 
 >  VICREO Listener is a small program that sits on your machine waiting for incomming TCP connection/commands. It uses pre-defined commands to simulate keypresses on your machine. You can use this program to preform hotkey actions from remote
 
@@ -21,96 +16,104 @@ On your client machine (the one you are sending commands from), send TCP string 
 
 ## Usage
 
-Below you'll find a table of pre-installed commands that the listener will accept. First tell the program what kind of key you are going to send and than the key itself.
+You'll send an object to the listener. The application first looks a key called <pre><code>type</code></pre>.
 
-| Action					| Description									| Example								|
-| --------------- | --------------------------- |-----------------------|
-| &lt;SK&gt;						| Single key								|&lt;SK&gt;n  								|
-| &lt;SPK&gt;						| Special key (modifier)		|&lt;SKP&gt;enter 								|
-| &lt;KCOMBO&gt;	&lt;AND&gt;	| Key combination							|&lt;KCOMBO&gt;alt&lt;AND&gt;tab  	|
-| &lt;KTRIO&gt;	&lt;AND&gt;	&lt;AND2&gt;	| Key trio combination							|&lt;KCOMBO&gt;ctrl&lt;AND&gt;shift&lt;AND2&gt;d  	|
-| &lt;KPRESS&gt;				| Simulates key down					|&lt;KPRESS&gt;n					  	|
-| &lt;KRELEASE&gt;			| Simulates key up						|&lt;KRELEASE&gt;n				  	|
-| &lt;MSG&gt;						| Send message								|&lt;MSG&gt;Hello World (only string message)		|
-| &lt;FILE&gt;					| Open file (complete path)		|&lt;FILE&gt;c:\user\test\test.bat
-| &lt;SKE&gt;	&lt;PROCESS&gt; &lt;AND&gt;	&lt;AND2&gt;	| (MacOS ONLY) - Send KeyPress Event to Process with optional modifiers	|&lt;SKE&gt;0x12&lt;PROCESS&gt;propresenter&lt;AND&gt;cmd&lt;AND2&gt;none
+The following types are availiable;
+	* press (simulate a keypress)
+	* file (open a file)
+	* shell (perform a shell command)
+	* down (simulate a key down)
+	* up (simulate a key up)
+	* processOSX (send keys to a process on mac via applescript)
 
-The &lt;KPRESS&gt; and &lt;KRELEASE&gt; can be used for special cases, Example;<br>
-&lt;KPRESS&gt;ctrl<br>
-&lt;KPRESS&gt;c<br>
-&lt;KRELEASE&gt;c<br>
-&lt;KRELEASE&gt;ctrl<br>
+### Example key press
+For keypresses create a object like this;
+<pre><code>{ "key":"tab", "type":"press", "modifiers":["alt"] }'</code></pre>
+> Modifiers can be a string or an array if you have more.
+> Alt, command(win), Ctrl and Shift are supported.
 
-but above is the same as &lt;KCOMBO&gt;ctrl&lt;AND&gt;c
+### Example open file
+Open a file on the local system;
+<pre><code>{ "type":"file","path":"C:/Barco/InfoT1413.pdf" }</code></pre>
 
-## &lt;SKE&gt; (MacOS Only) - Notes ##
-The **&lt;SKE&gt;*keyCode*&lt;PROCESS&gt;*processSearchString*&lt;AND&gt;*optionalModifierKey1*&lt;AND2&gt;*optionalModifierKey2*** command (MacOS only) will send a keyboard keypress event directly to a specific process found by searching for any process matching \*processSearchString\* with up to two optional modifiers: none|alt|ctrl|cmd|shift.
+### Example shell
+To perform a shell command on the system;
+<pre><code>{ "type":"shell","shell":"dir" }</code></pre>
 
-Tip: You can find an applications exact process name by checking the list in the CPU pane of MacOS Activity Monitor.
+### Example processOSX
+<pre><code>{ "key":"tab", "type":"processOSX","processName":"Powerpoint" "modifier":["alt"] }</code></pre>
 
-Please note that this works through a very different mechanism than the other commands in VICREO-Listener and it is **MacOS only.** You won't often need this command - as the other commands to type Keys are likely to do what you need.  However, this command can help if you need to send keystrokes to an application running in the background.
+## Keys ##
 
-Please also note that you will need to add the VICREO Listener application to the list of "Allow the app below to control your computer" in the Privacy section of Security & Privacy MacOS system settings.
+>The following keys are supported:
 
-This command is virtually sending physical keyboard events with the keys identified by a KeyCode. You must send the keyboard keycode - not the character/letter being typed.
-
-For example, if you send keycode 0x00 and your computer is setup to use a US keyboard as your current input, that will be like pressing the key with the letter **A** on it. If however, your keyboard is Greek, then sending KeyCode 0x00 will be like typing the letter **α**. Think of it as pressing a physical key in a specific location on a keyboard.  You can lookup MacOS keyboard keycodes online or refer to the map of the US keyboard below:
-![KeyCodes](Apple%20Keyboard%20KeyCodes.jpg)
-The US language keyboad map above shows the hex keycodes in green (*you can also send the decimal equivalent if you prefer*).
-Generally, keyboards for other languages will have the **same KeyCodes for physical keys in the same locations on a keyboard** - they just have different letters printed on them.  This means you can "overlay" any other language keyboard on the US keyboard to find the right keycode you want for other languages.  
-
-Also, note that the events are directed at the running process itself (Not the foreground application, Window or Text Control). This means it is possible to send these keyboard events to applications running in the background on MacOS.  However, depending on how the application is processing keyboard input, **this only works in very limited cases.**
-It will most likely work for application-wide hotkeys. See how your application responds - your mileage may vary.
-
-> Be aware there is a limit of 160 bytes to receive, this because of the &lt;MSG&gt; function
-
-> Make sure you use the backslash in the file open command
-
-## Modifiers ##
-
->The following modifier are supported:
-
-alt
-ctrl
-tab
-shift
-cmd
-alt_gr
-delete
-backspace
-space
-caps_lock
-end
-enter
-esc
-f1
-f2
-f3
-f4
-f5
-f6
-f7
-f8
-f9
-f10
-f11
-f12
-home
-insert (only windows)
-left
-right
-up
-down
-num_lock (only windows)
-page_up
-page_down
+| Key								|Description															| Notes								|
+|-------------------|-----------------------------------------|---------------------|
+| backspace					|																					|											|
+| delete						|																					|											|
+| enter							|																					|											|
+| tab								|																					|											|
+| escape						|																					|											|
+| up								| Up arrow key														|											|
+| down							| Down arrow key													|											|
+| right							| Right arrow key													|											|
+| left							| Left arrow key													|											|
+| home							|																					|											|
+| end								|																					|											|
+| pageup						|																					|											|
+| pagedown					|																					|											|
+| f1								|																					|											|
+| f2								|																					|											|
+| f3								|																					|											|
+| f4								|																					|											|
+| f5								|																					|											|
+| f6								|																					|											|
+| f7								|																					|											|
+| f8								|																					|											|
+| f9								|																					|											|
+| f10								|																					|											|
+| f11								|																					|											|
+| f12								|																					|											|
+| command						|																					|											|
+| alt								|																					|											|
+| control						|																					|											|
+| shift							|																					|											|
+| right_shift				|																					|											|
+| space							|																					|											|
+| printscreen				|																					| No Mac support			|
+| insert						|																					| No Mac support			|
+| audio_mute				| Mute the volume													|											|
+| audio_vol_down		| Lower the volume												|											|
+| audio_vol_up			| Increase the volume											|											|
+| audio_play				| Play																		|											|
+| audio_stop				| Stop																		|											|
+| audio_pause				| Pause																		|											|
+| audio_prev				| Previous Track													|											|
+| audio_next				| Next Track															|											|
+| audio_rewind	 		|																					| Linux only					|
+| audio_forward	 		|																					| Linux only					|
+| audio_repeat	 		|																					| Linux only					|
+| audio_random	 		|																					| Linux only					|
+| numpad_0					|																					| No Linux support		|
+| numpad_1					|																					| No Linux support		|
+| numpad_2					|																					| No Linux support		|
+| numpad_3					|																					| No Linux support		|
+| numpad_4				 	|																					| No Linux support		|
+| numpad_5					|																					| No Linux support		|
+| numpad_6					|																					| No Linux support		|
+| numpad_7					|																					| No Linux support		|
+| numpad_8					|																					| No Linux support		|
+| numpad_9					|																					| No Linux support		|
+| lights_mon_up			| Turn up monitor brightness							| No Windows support	|
+| lights_mon_down		| Turn down monitor brightness						| No Windows support	|
+| lights_kbd_toggle | Toggle keyboard backlight on/off				| No Windows support	|
+| lights_kbd_up			| Turn up keyboard backlight brightness		| No Windows support	|
+| lights_kbd_down		| Turn down keyboard backlight brightness	| No Windows support	|
 
 ## FAQ ##
 
 For mac, when you need the path of a file, right-click on the file and when you see the menu, press and hold Alt to be able to copy the full path.
 
-Want to run it yourself? build it with PyInstaller and use the spec file.
-
 ----
 
-For additional actions, please raise a feature request on [GitHub](https://github.com/JeffreyDavidsz/VICREO-Listener/issues).
+For additional actions, please raise a feature request on [GitHub](https://github.com/JeffreyDavidsz/VICREO-listener-electron/issues).
