@@ -2,9 +2,11 @@
 
 *Hotkey listener for windows, Mac and Linux*
 
-Go to [VICREO releases](https://github.com/JeffreyDavidsz/VICREO-listener-electron/releases) for download.
+Linux release will be available shortly.
 
->  VICREO Listener is a small program that sits on your machine waiting for incomming TCP connection/commands. It uses pre-defined commands to simulate keypresses on your machine. You can use this program to preform hotkey actions from remote
+Go to [VICREO releases](https://github.com/JeffreyDavidsz/VICREO-listener/releases) for download.
+
+>  VICREO Listener is a small program that sits on your machine waiting for incoming TCP connection/commands. It uses pre-defined commands to simulate key-presses on your machine. You can use this program to preform hotkey actions from remote
 
 [<img src="https://bitfocus.io/companion/badge.png?ref=vicreo" width="200px" alt="Controllable by Companion">](https://bitfocus.io/companion/)
 
@@ -18,16 +20,16 @@ On your client machine (the one you are sending commands from), send TCP string 
 
 You'll send an object to the listener. The application first looks a key called <pre><code>type</code></pre>.
 
-The following types are availiable;
-	* press (simulate a keypress)
+The following types are available;
+	* press (simulate a key-press)
 	* file (open a file)
 	* shell (perform a shell command)
 	* down (simulate a key down)
 	* up (simulate a key up)
-	* processOSX (send keys to a process on mac via applescript)
+	* processOSX (send keys to a process on mac via AppleScript)
 
 ### Example key press
-For keypresses create a object like this;
+For key-presses create a object like this;
 <pre><code>{ "key":"tab", "type":"press", "modifiers":["alt"] }'</code></pre>
 > Modifiers can be a string or an array if you have more.
 > Alt, command(win), Ctrl and Shift are supported.
@@ -41,7 +43,7 @@ To perform a shell command on the system;
 <pre><code>{ "type":"shell","shell":"dir" }</code></pre>
 
 ### Example processOSX
-<pre><code>{ "key":"tab", "type":"processOSX","processName":"Powerpoint" "modifier":["alt"] }</code></pre>
+<pre><code>{ "key":"tab", "type":"processOSX","processName":"PowerPoint" "modifier":["alt"] }</code></pre>
 
 ## Keys ##
 
@@ -116,4 +118,4 @@ For mac, when you need the path of a file, right-click on the file and when you 
 
 ----
 
-For additional actions, please raise a feature request on [GitHub](https://github.com/JeffreyDavidsz/VICREO-listener-electron/issues).
+For additional actions, please raise a feature request on [GitHub](https://github.com/JeffreyDavidsz/VICREO-listener/issues).
