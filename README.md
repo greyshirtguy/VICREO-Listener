@@ -16,19 +16,19 @@ On your client machine (the one you are sending commands from), send TCP string 
 
 ## Usage
 
-You'll send an object to the listener. The application first looks a key called <pre><code>type</code></pre>.
+You'll send an object to the listener. The application first looks a key called `type`.
 
 The following types are availiable;
-	* press (simulate a keypress)
-	* file (open a file)
-	* shell (perform a shell command)
-	* down (simulate a key down)
-	* up (simulate a key up)
-	* processOSX (send keys to a process on mac via applescript)
+* press (simulate a keypress)
+* file (open a file)
+* shell (perform a shell command)
+* down (simulate a key down)
+* up (simulate a key up)
+* processOSX (send keys to a process on mac via applescript)
 
 ### Example key press
 For keypresses create a object like this;
-<pre><code>{ "key":"tab", "type":"press", "modifiers":["alt"] }'</code></pre>
+<pre><code>{ "key":"tab", "type":"press", "modifiers":["alt"] }</code></pre>
 > Modifiers can be a string or an array if you have more.
 > Alt, command(win), Ctrl and Shift are supported.
 
