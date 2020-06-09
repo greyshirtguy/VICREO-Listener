@@ -8,7 +8,7 @@ const robot = require('robotjs') // keyboard and mouse events
 const os = require('os') // for appple script
 const { exec, execFile } = require('child_process') // Shell and file actions
 const path = require('path')
-var iconpath = path.join(__dirname, 'img/favicon.ico')
+var iconpath = path.join(__dirname, 'img/favicon.png')
 
 let server
 let win
