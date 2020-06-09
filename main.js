@@ -24,6 +24,7 @@ function createWindow() {
 	win = new BrowserWindow({
 		width: 410,
 		height: 600,
+		resizable: false,
 		icon: iconpath,
 		webPreferences: {
 			nodeIntegration: true
