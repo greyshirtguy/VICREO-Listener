@@ -24,6 +24,14 @@ cache:
     - $HOME/.cache/electron
     - $HOME/.cache/electron-builder
 
+before_cache:
+  - rm -rf $HOME/.cache/electron-builder/wine
+
+before_install:
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then 
+      sudo apt-get install libxtst-dev libpng++-dev; 
+    fi
+    
 script:
   - |
     if [ "$TRAVIS_OS_NAME" == "linux" ]; then
@@ -36,11 +44,6 @@ script:
     else
       yarn release
     fi
-before_cache:
-  - rm -rf $HOME/.cache/electron-builder/wine
-
-before_install:
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get install libxtst-dev libpng++-dev; fi
 
 branches:
   except:
