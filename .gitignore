@@ -1,5 +1,6 @@
-output/icon.ico
-VICREO_Client.py
-VICREO_stop_listener.py
-*.bat
-icon.ico
+node_modules/
+dist/
+.vscode/
+.DS_Store
+.eslintrc
+.env
