@@ -89,6 +89,7 @@ ipcMain.on('asynchronous-message', (event, arg) => {
 	if (arg != port) {
 		port = arg;
 		console.log('port number changed, closing server');
+		server.close();
 		createListener();
 		event.reply('asynchronous-reply', 'ok')
 	}
