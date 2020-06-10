@@ -1,7 +1,7 @@
 {
 	"name": "vicreo",
 	"version": "2.0.0",
-	"description": "Vicreo listener in electron",
+	"description": "Hotkey listener for Windows & macOS.",
 	"main": "main.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
@@ -18,7 +18,11 @@
 	"build": {
 		"appId": "nl.vicreo.listener",
 		"mac": {
-			"category": "Keyboard emulator"
+			"category": "Keyboard emulator",
+			"icon": "img/icon.icns",
+			"extendInfo": {
+				"LSUIElement": 1
+			  }
 		},
 		"win": {
 			"icon": "img/logo.png"
