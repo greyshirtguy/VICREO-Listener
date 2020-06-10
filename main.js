@@ -8,7 +8,8 @@ const robot = require('robotjs') // keyboard and mouse events
 const os = require('os') // for appple script
 const { exec, execFile } = require('child_process') // Shell and file actions
 const path = require('path')
-var iconpath = path.join(__dirname, 'img/favicon.ico')
+var iconpath = path.join(__dirname, 'img/favicon.png')
+let tray = null
 
 let server
 let win
@@ -24,31 +25,12 @@ function createWindow() {
 	win = new BrowserWindow({
 		width: 410,
 		height: 600,
+		resizable: false,
 		icon: iconpath,
 		webPreferences: {
 			nodeIntegration: true
 		}
 	})
-	var appIcon = new Tray(iconpath)
-
-	var contextMenu = Menu.buildFromTemplate([
-		{
-			label: 'Show App', click: function () {
-				win.show()
-			}
-		},
-		{
-			label: 'Quit', click: function () {
-				app.isQuiting = true;
-				server.close()
-				console.log('user quit')
-				app.quit();
-				win.destroy()
-			}
-		}
-	])
-
-	appIcon.setContextMenu(contextMenu)
 
 	win.setMenu(null)
 	// load the index.html of the app
@@ -89,14 +71,34 @@ ipcMain.on('asynchronous-message', (event, arg) => {
 	if (arg != port) {
 		port = arg;
 		console.log('port number changed, closing server');
+		server.close();
 		createListener();
 		event.reply('asynchronous-reply', 'ok')
 	}
 })
 
 
-app.on('ready', createWindow)
-
+app.whenReady().then(() => {
+	tray = new Tray(iconpath)
+	createWindow();
+	var contextMenu = Menu.buildFromTemplate([
+		{
+			label: 'Show App', click: function () {
+				win.show()
+			}
+		},
+		{
+			label: 'Quit', click: function () {
+				app.isQuiting = true;
+				server.close()
+				console.log('user quit')
+				app.quit();
+				win.destroy()
+			}
+		}
+	])
+	tray.setContextMenu(contextMenu)
+})
 app.on('before_quit', () => {
 	isQuiting = true
 	server.close()
