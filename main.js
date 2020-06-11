@@ -60,7 +60,9 @@ function createWindow() {
 		win = null
 	})
 
-
+	let contents = win.webContents
+	console.log(contents)
+	
 	createListener()
 }
 
@@ -147,7 +149,11 @@ var portInUse = function (port, callback) {
 				processIncomingData(JSON.parse(data))
 			} catch (e) {
 				console.log("error parsing JSON, trying old way")
-				processIncomingData2(data)
+				try {
+					processIncomingData2(data)
+				} catch (e) {
+					console.error(e)
+				}
 			}
 		})
 		server.on('error', function (e) {
@@ -221,40 +227,75 @@ function processIncomingData2(data) {
 	switch (type) {
 		case 'SK':
 			key1 = incomingString.slice(incomingString.search('>') + 1)
+			key1 == 'cmd' ? key1 = 'command' : key1 = key1
 			hitHotkey(key1)
 			break;
 		case 'SPK':
 			key1 = incomingString.slice(incomingString.search('>') + 1)
+			key1 == 'cmd' ? key1 = 'command' : key1 = key1
 			hitHotkey(key1)
 			break;
 		case 'KCOMBO':
 			key1 = incomingString.slice(8, incomingString.search('<AND>'))
 			key2 = incomingString.slice(incomingString.search('<AND>') + 5)
+			key1 == 'cmd' ? key1 = 'command' : key1 = key1
+			key2 == 'cmd' ? key2 = 'command' : key2 = key2
 			hitHotkey(key2, key1)
 			break;
 		case 'KTRIO':
 			key1 = incomingString.slice(7, incomingString.search('<AND>'))
 			key2 = incomingString.slice(incomingString.search('<AND>') + 5, incomingString.search('<AND2>'))
 			key3 = incomingString.slice(incomingString.search('<AND2>') + 6)
+			key1 == 'cmd' ? key1 = 'command' : key1 = key1
+			key2 == 'cmd' ? key2 = 'command' : key2 = key2
+			key3 == 'cmd' ? key3 = 'command' : key3 = key3
 			hitHotkey(key3, [key1, key2])
 			break;
 		case 'KPRESS':
 			key1 = incomingString.slice(8, incomingString.search('<AND>'))
 			key2 = incomingString.slice(incomingString.search('<AND>') + 5)
-			robot.keyToggle(key2, 'down', key1)
+			key1 == 'cmd' ? key1 = 'command' : key1 = key1
+			key2 == 'cmd' ? key2 = 'command' : key2 = key2
+			robot.keyToggle(checkKey(key2), 'down', checkKey(key1))
 			break;
 		case 'KRELEASE':
 			key1 = incomingString.slice(8, incomingString.search('<AND>'))
 			key2 = incomingString.slice(incomingString.search('<AND>') + 5)
-			robot.keyToggle(key2, 'up', key1)
+			robot.keyToggle(checkKey(key2), 'up', checkKey(key1))
 			break;
 		case 'MSG':
 			robot.typeString(incomingString.slice(incomingString.search('>') + 1))
 			break;
 	}
 }
+function checkKey(key) {
+	switch (key){
+		case 'cmd':
+			return 'command';
+		case 'esc':
+			return 'escape';
+		}
+}
+
+function checkKeys(modifier) {
+	if (Array.isArray(modifier)) {
+		for (mod of modifier) {
+			switch (key){
+				case 'cmd':
+					return 'command';
+				case 'esc':
+					return 'escape';
+				}
+		}
+	} else {
+		checkKey(modifier)
+	}
+}
 
 function hitHotkey(key, modifier) {
+	key = checkKey(key);
+	modifier = checkKeys(modifier);
+
 	if (os.platform() === 'darwin') {
 		if (modifier) {
 			return exec(`Script="tell app \\"System Events\\" to keystroke ${key} using ${modifier} down" osascript -e "$Script"`)
