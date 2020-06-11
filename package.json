@@ -8,7 +8,7 @@
 		"start": "electron .",
 		"devstart": "electromon ./main.js",
 		"pack": "electron-builder --dir",
-		"release": "electron-builder --publish never",
+		"release": "electron-builder -p always",
 		"macdist": "electron-builder --mac",
 		"windist": "electron-builder --win",
 		"lindist": "electron-builder --linux tar.gz",
