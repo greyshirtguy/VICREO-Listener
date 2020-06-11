@@ -259,14 +259,12 @@ function processIncomingData2(data) {
 			key2 = incomingString.slice(incomingString.search('<AND>') + 5)
 			key1 == 'cmd' ? key1 = 'command' : key1 = key1
 			key2 == 'cmd' ? key2 = 'command' : key2 = key2
-			robot.keyToggle(key2, 'down', key1)
+			robot.keyToggle(checkKey(key2), 'down', checkKey(key1))
 			break;
 		case 'KRELEASE':
 			key1 = incomingString.slice(8, incomingString.search('<AND>'))
 			key2 = incomingString.slice(incomingString.search('<AND>') + 5)
-			key1 == 'cmd' ? key1 = 'command' : key1 = key1
-			key2 == 'cmd' ? key2 = 'command' : key2 = key2
-			robot.keyToggle(key2, 'up', key1)
+			robot.keyToggle(checkKey(key2), 'up', checkKey(key1))
 			break;
 		case 'MSG':
 			robot.typeString(incomingString.slice(incomingString.search('>') + 1))
@@ -274,14 +272,33 @@ function processIncomingData2(data) {
 	}
 }
 function checkKey(key) {
-	switch key:
+	switch (key){
 		case 'cmd':
-			return 
-	key == 'cmd' ? key = 'command' : key = key
-	return
+			return 'command';
+		case 'esc':
+			return 'escape';
+		}
 }
+
+function checkKeys(modifier) {
+	if (Array.isArray(modifier)) {
+		for (mod of modifier) {
+			switch (key){
+				case 'cmd':
+					return 'command';
+				case 'esc':
+					return 'escape';
+				}
+		}
+	} else {
+		checkKey(modifier)
+	}
+}
+
 function hitHotkey(key, modifier) {
 	key = checkKey(key);
+	modifier = checkKeys(modifier);
+
 	if (os.platform() === 'darwin') {
 		if (modifier) {
 			return exec(`Script="tell app \\"System Events\\" to keystroke ${key} using ${modifier} down" osascript -e "$Script"`)
