@@ -60,8 +60,8 @@ function createWindow() {
 		win = null
 	})
 
-	let contents = win.webContents
-	console.log(contents)
+	// let contents = win.webContents
+	// console.log(contents)
 	
 	createListener()
 }
@@ -95,7 +95,6 @@ app.whenReady().then(() => {
 				server.close()
 				console.log('user quit')
 				app.quit();
-				win.destroy()
 			}
 		}
 	])
