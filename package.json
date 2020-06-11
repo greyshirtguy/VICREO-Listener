@@ -1,6 +1,6 @@
 {
 	"name": "vicreo",
-	"version": "2.0.1",
+	"version": "2.0.2",
 	"description": "Hotkey listener for Windows & macOS.",
 	"main": "main.js",
 	"scripts": {

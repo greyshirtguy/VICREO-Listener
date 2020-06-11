@@ -79,11 +79,7 @@ ipcMain.on('asynchronous-message', (event, arg) => {
 
 
 app.whenReady().then(() => {
-	tray = new Tray(
-		process.platform == "darwin" ?
-		path.join(__dirname, 'img/macOSmenuiconTemplate.png') :
-		path.join(__dirname, 'img/favicon.png')
-	);
+	tray = new Tray(path.join(__dirname, 'img/favicon.png'));
 	createWindow();
 	var contextMenu = Menu.buildFromTemplate([
 		{
@@ -124,6 +120,7 @@ app.on('activate', () => {
 		createWindow()
 	}
 })
+if (process.platform == "darwin") {app.dock.setIcon(path.join(__dirname, 'img/logo.png'))};
 
 function createListener() {
 	// Load socket
@@ -161,7 +158,7 @@ var portInUse = function (port, callback) {
 			callback(false);
 		});
 	});
-	server.listen(port, '127.0.0.1');
+	server.listen(port, '0.0.0.0');
 
 };
 
