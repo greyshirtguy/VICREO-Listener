@@ -1,16 +1,14 @@
 /* eslint no-console: 'off' */
 const { app, BrowserWindow, Menu, Tray } = require("electron") // app
-// const applescript = require ("applescript")
 const osascript = require('node-osascript');
 const net = require("net") // TCP server
 const robot = require('robotjs') // keyboard and mouse events
 const os = require('os') // for appple script
 const child_process = require('child_process') // Shell and file actions
-const fs = require('fs')
 const path = require('path')
-var iconpath = path.join(__dirname, 'img/favicon.png')
+const version = require('./package.json').version
+const iconpath = path.join(__dirname, 'img/favicon.png')
 let tray = null
-
 let server
 let win
 let port = 10001;
@@ -24,7 +22,7 @@ function createWindow() {
 	// create window
 	win = new BrowserWindow({
 		width: 410,
-		height: 600,
+		height: 800,
 		resizable: false,
 		icon: iconpath,
 		webPreferences: {
@@ -33,6 +31,7 @@ function createWindow() {
 	})
 
 	win.setMenu(null)
+		// main process
 	// load the index.html of the app
 	win.loadFile('index.html')
 
@@ -66,26 +65,29 @@ function createWindow() {
 
 // Catch messages from front-ed.
 const { ipcMain } = require('electron')
-ipcMain.on('asynchronous-message', (event, arg) => {
+ipcMain.on('changePort', (event, arg) => {
 	console.log(arg)
 	if (arg != port) {
 		port = arg;
 		console.log('port number changed, closing server');
 		server.close();
 		createListener();
-		event.reply('asynchronous-reply', 'ok')
+		// event.reply('changePort', 'ok')
 	}
 })
-
 
 app.whenReady().then(() => {
 	tray = new Tray(path.join(__dirname, 'img/favicon.png'));
 	createWindow();
-	var contextMenu = Menu.buildFromTemplate([
+
+	let contextMenu = Menu.buildFromTemplate([
 		{
 			label: 'Show App', click: function () {
 				win.show()
 			}
+		},
+		{
+			label: 'Version: '+ version
 		},
 		{
 			label: 'Quit', click: function () {
@@ -93,11 +95,16 @@ app.whenReady().then(() => {
 				server.close()
 				console.log('user quit')
 				app.quit();
-				win.destroy()
 			}
 		}
 	])
 	tray.setContextMenu(contextMenu)
+
+  // win.webContents.openDevTools();
+  win.webContents.on('dom-ready', () => {
+		win.webContents.send('version', 'Version: '+version);
+	});
+	
 })
 app.on('before_quit', () => {
 	isQuiting = true
@@ -124,7 +131,7 @@ if (process.platform == "darwin") { app.dock.setIcon(path.join(__dirname, 'img/l
 
 function createListener() {
 	// Load socket
-	console.log('waiting for connection...')
+	win.webContents.send('log', 'waiting for connection...');
 	portInUse(port, function (returnValue) {
 		console.log('Port already active?', returnValue);
 	});
@@ -138,6 +145,7 @@ var portInUse = function (port, callback) {
 		console.log("connected")
 		socket.on('end', () => {
 			console.log('client ended connection, waiting for connection...')
+			win.webContents.send('log', 'client ended connection, waiting for connection...');
 		})
 		socket.on('connect', () => {
 			console.log("connected")
@@ -200,6 +208,7 @@ function processKeyData(key, modifiers) {
 }
 
 function processIncomingData(data) {
+	win.webContents.send('log', JSON.stringify(data));
 	console.log(data)
 	switch (data.type) {
 		case 'press':
@@ -244,14 +253,14 @@ function processIncomingData(data) {
 		case 'shell':
 			child_process.exec(data.shell, (error, stdout, stderr) => {
 				if (error) {
-					console.log(`error: ${error.message}`);
+					win.webContents.send('log', `error: ${error.message}`);
 					return;
 				}
 				if (stderr) {
-					console.log(`stderr: ${stderr}`);
+					win.webContents.send('log', `stderr: ${stderr}`);
 					return;
 				}
-				console.log(`stdout: ${stdout}`);
+				win.webContents.send('log', `stdout: ${stdout}`);
 			})
 			break;
 
@@ -287,6 +296,7 @@ function processIncomingData(data) {
 }
 function processIncomingData2(data) {
 	let incomingString = data.toString('utf8')
+	win.webContents.send('log', incomingString);
 	console.log(incomingString)
 	let key1, key2, key3
 	let type = incomingString.slice(1, incomingString.search('>'))
