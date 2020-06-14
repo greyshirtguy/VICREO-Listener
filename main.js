@@ -188,12 +188,35 @@ function findKeyCode(key) {
 		}
 	}
 }
+function checkModifiers(mod) {
+	if(mod.length) {
+		for(item in mod) {
+			mod[item] = checkKey(mod[item]);
+		}
+		return mod
+	} else {
+		return [];
+	}
+}
+function checkKey(key) {
+	switch(key) {
+		case 'cmd':
+			return 'command';
+		case 'esc':
+			return 'escape';
+		case 'ctrl':
+			return 'control';
+	}
+	return key.toLowerCase();
+}
 
-function processKeyData(key, modifiers) {
+function processKeyDataOSX(key, modifiers) {
 	let script = null;
+	key = key.toLowerCase()
 	let modifiersInString = '{'
 	for (item of modifiers) {
 		if (item == 'cmd') item = 'command';
+		if (item == 'ctrl') item = 'control';
 		modifiersInString += item + ' down,';
 	}
 	modifiersInString = modifiersInString.substring(0, modifiersInString.length - 1)
@@ -222,35 +245,35 @@ function processIncomingData(data) {
 	switch (data.type) {
 		case 'press':
 			if (process.platform == "darwin") {
-				osascript.execute('tell application \"System Events\"\n' + processKeyData(data.key, data.modifiers) + '\nend tell', function (err, result, raw) {
+				osascript.execute('tell application \"System Events\"\n' + processKeyDataOSX(data.key, data.modifiers) + '\nend tell', function (err, result, raw) {
 					if (err) return console.error(err)
 					console.log(result, raw)
 				});
 			} else {
-				robot.keyTap(data.key, data.modifiers)
+				robot.keyTap(checkKey(data.key), checkModifiers(data.modifiers))
 			}
 			break;
 
 		case 'down':
-			robot.keyToggle(data.key, 'down', data.modifiers)
+			robot.keyToggle(checkKey(data.key), 'down', checkModifiers(data.modifiers))
 			break;
 
 		case 'up':
-			robot.keyToggle(data.key, 'up', data.modifiers)
+			robot.keyToggle(checkKey(data.key), 'up', checkModifiers(data.modifiers))
 			break;
 
 		case 'processOSX':
 			let script = null;
 			if (data.processName == 'null' || data.processName == '') {
 				if (process.platform == "darwin") {
-					osascript.execute('tell application \"System Events\"\n' + processKeyData(data.key, data.modifiers) + '\nend tell', function (err, result, raw) {
+					osascript.execute('tell application \"System Events\"\n' + processKeyDataOSX(data.key, data.modifiers) + '\nend tell', function (err, result, raw) {
 						if (err) return console.error(err)
 						console.log(result, raw)
 					});
 				}
 			} else {
 				if (process.platform == "darwin") {
-					osascript.execute(`tell application \"System Events\"\ntell process \"${data.processName}\"\nset frontmost to true\n` + processKeyData(data.key, data.modifiers) + '\nend tell\nend tell', function (err, result, raw) {
+					osascript.execute(`tell application \"System Events\"\ntell process \"${data.processName}\"\nset frontmost to true\n` + processKeyDataOSX(data.key, data.modifiers) + '\nend tell\nend tell', function (err, result, raw) {
 						if (err) return console.error(err)
 						console.log(result, raw)
 					});
@@ -286,7 +309,6 @@ function processIncomingData(data) {
 						return;
 					}
 					console.log(stdout);
-					process.exit(0);// exit process once it is opened
 				})
 			} else {
 				child_process.exec('start ' + data.path, function (err, stdout, stderr) {
@@ -295,7 +317,6 @@ function processIncomingData(data) {
 						return;
 					}
 					console.log(stdout);
-					process.exit(0);// exit process once it is opened
 				})
 			}
 			break;
