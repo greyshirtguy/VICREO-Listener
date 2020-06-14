@@ -117,9 +117,12 @@
 <script>
 	
 	const { ipcRenderer } = require('electron')
-
+	
 	ipcRenderer.on('log', (event, arg) => {
-		document.getElementById('logs').innerHTML += '\n' + arg;
+		let today = new Date();
+		let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + " ";
+		document.getElementById('logs').innerHTML = time + arg.concat('\n', document.getElementById('logs').innerHTML)
+		// document.getElementById('logs').innerHTML += '\n' + arg;
 	})
 
 	ipcRenderer.on('version', (event, arg) => {
