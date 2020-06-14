@@ -18,11 +18,18 @@ let port = 10001;
 // var cmd = '{ "type":"file","path":"C:/Barco/InfoT1413.pdf" }'
 // var cmd = '{ "type":"string","msg":"C:/Barco/InfoT1413.pdf" }'
 
+process.on('uncaughtException', (err) => {
+  // if (error.code === 'ERR_BUFFER_OUT_OF_BOUNDS' ) {
+  //   // ...
+	// } 
+	console.error(err)
+});
+
 function createWindow() {
 	// create window
 	win = new BrowserWindow({
 		width: 410,
-		height: 800,
+		height: 750,
 		resizable: false,
 		icon: iconpath,
 		webPreferences: {
@@ -143,12 +150,14 @@ var portInUse = function (port, callback) {
 		socket.write('Listener active\r\n');
 		socket.pipe(socket);
 		console.log("connected")
+		win.webContents.send('log', 'connected');
 		socket.on('end', () => {
 			console.log('client ended connection, waiting for connection...')
 			win.webContents.send('log', 'client ended connection, waiting for connection...');
 		})
 		socket.on('connect', () => {
 			console.log("connected")
+			win.webContents.send('log', 'connected');
 		})
 		socket.on('data', (data) => {
 			try {
