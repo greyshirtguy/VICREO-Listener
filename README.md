@@ -14,26 +14,26 @@ Go to [VICREO releases](https://github.com/JeffreyDavidsz/VICREO-listener/releas
 
 Download the right software package for your operating system and launch the program on the machine you would like to control (host).
 
-On your client machine (the one you are sending commands from), send TCP string to the right IP-address from the host, to port 10001
+On your client machine (the one you are sending commands from), send TCP string to the right IP-address from the host, to port 10001 (or change the port to something you like)
 
 ## Usage
 
 You'll send an object to the listener. The application first looks a key called `type`.
 
-The following types are availiable;
+The following types are available;
 * press (simulate a keypress)
 * file (open a file)
 * shell (perform a shell command)
 * down (simulate a key down)
 * up (simulate a key up)
-* processOSX (send keys to a process on mac via applescript)
+* processOSX (send keys to a process on mac via AppleScript)
 
 ### Example key press
 For keypresses create a object like this;
 <pre><code>{ "key":"tab", "type":"press", "modifiers":["alt"] }</code></pre>
 
-> Modifiers can be a string or an array if you have more.
-> Alt, command(win), Ctrl and Shift are supported.
+> Put the modifiers in an array.
+> Alt/option, command(win), Ctrl and Shift are supported.
 
 ### Example open file
 Open a file on the local system;
@@ -44,7 +44,7 @@ To perform a shell command on the system;
 <pre><code>{ "type":"shell","shell":"dir" }</code></pre>
 
 ### Example processOSX
-<pre><code>{ "key":"tab", "type":"processOSX","processName":"PowerPoint" "modifier":["alt"] }</code></pre>
+<pre><code>{ "key":"tab", "type":"processOSX","processName":"Microsoft PowerPoint" "modifier":["alt"] }</code></pre>
 
 ## Keys ##
 

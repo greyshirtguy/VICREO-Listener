@@ -40,7 +40,7 @@ function createWindow() {
 	win.setMenu(null)
 		// main process
 	// load the index.html of the app
-	win.loadFile('index.html')
+	win.loadFile('screen.html')
 
 	win.on('minimize', function (event) {
 		event.preventDefault();
