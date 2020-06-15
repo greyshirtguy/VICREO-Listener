@@ -254,6 +254,10 @@ function processIncomingData(data) {
 			}
 			break;
 
+		case 'pressSpecial':
+			robot.keyTap(checkKey(data.key), [])
+			break;
+
 		case 'down':
 			robot.keyToggle(checkKey(data.key), 'down', checkModifiers(data.modifiers))
 			break;
