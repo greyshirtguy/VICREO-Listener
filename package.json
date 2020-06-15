@@ -1,6 +1,6 @@
 {
 	"name": "VICREO-Listener",
-	"version": "2.0.5",
+	"version": "2.0.6",
 	"description": "Hotkey listener for Windows & macOS.",
 	"main": "main.js",
 	"scripts": {
@@ -9,8 +9,8 @@
 		"devstart": "electromon ./main.js",
 		"pack": "electron-builder --dir",
 		"release": "electron-builder -p always",
-		"lindist": "electron-builder --linux tar.gz",
-		"rpidist": "electron-builder --armv7l --linux tar.gz",
+		"lindist": "electron-builder --linux tar.gz -p always",
+		"rpidist": "electron-builder --armv7l --linux tar.gz -p always",
 		"postinstall": "electron-builder install-app-deps"
 	},
 	"build": {
