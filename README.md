@@ -8,7 +8,8 @@ Go to [VICREO releases](https://github.com/JeffreyDavidsz/VICREO-listener/releas
 
 >  VICREO Listener is a small program that sits on your machine waiting for incoming TCP connection/commands. It uses pre-defined commands to simulate key-presses on your machine. You can use this program to preform hotkey actions from remote
 
-[<img src="https://bitfocus.io/companion/badge.png?ref=vicreo" width="200px" alt="Controllable by Companion">](https://bitfocus.io/companion/)
+[<img src="https://bitfocus.io/companion/badge.png?ref=vicreo" width="200px" alt="Controllable by Companion"/>](https://bitfocus.io/companion/)
+[<img src="https://d1iczxrky3cnb2.cloudfront.net/button-small-blue.png"/>](https://donorbox.org/vicreo-listener?default_interval=o&amount=25)
 
 ## Installation
 

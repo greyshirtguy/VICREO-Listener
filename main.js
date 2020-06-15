@@ -1,5 +1,5 @@
 /* eslint no-console: 'off' */
-const { app, BrowserWindow, Menu, Tray } = require("electron") // app
+const { app, BrowserWindow, Menu, Tray, shell } = require("electron") // app
 const osascript = require('node-osascript');
 const net = require("net") // TCP server
 const robot = require('robotjs') // keyboard and mouse events
@@ -19,8 +19,8 @@ let port = 10001;
 // var cmd = '{ "type":"string","msg":"C:/Barco/InfoT1413.pdf" }'
 
 process.on('uncaughtException', (err) => {
-  // if (error.code === 'ERR_BUFFER_OUT_OF_BOUNDS' ) {
-  //   // ...
+	// if (error.code === 'ERR_BUFFER_OUT_OF_BOUNDS' ) {
+	//	 // ...
 	// } 
 	console.error(err)
 });
@@ -38,7 +38,7 @@ function createWindow() {
 	})
 
 	win.setMenu(null)
-		// main process
+	// main process
 	// load the index.html of the app
 	win.loadFile('screen.html')
 
@@ -94,7 +94,7 @@ app.whenReady().then(() => {
 			}
 		},
 		{
-			label: 'Version: '+ version
+			label: 'Version: ' + version
 		},
 		{
 			label: 'Quit', click: function () {
@@ -107,12 +107,20 @@ app.whenReady().then(() => {
 	])
 	tray.setContextMenu(contextMenu)
 
-  // win.webContents.openDevTools();
-  win.webContents.on('dom-ready', () => {
-		win.webContents.send('version', 'Version: '+version);
+	// win.webContents.openDevTools();
+	win.webContents.on('dom-ready', () => {
+		win.webContents.send('version', 'Version: ' + version);
 	});
-	
+	win.webContents.on('will-navigate', handleRedirect)
+	win.webContents.on('new-window', handleRedirect)
 })
+let handleRedirect = (e, url) => {
+	if (url != win.webContents.getURL()) {
+		e.preventDefault()
+		shell.openExternal(url)
+	}
+}
+
 app.on('before_quit', () => {
 	isQuiting = true
 	server.close()
@@ -134,6 +142,7 @@ app.on('activate', () => {
 		createWindow()
 	}
 })
+
 if (process.platform == "darwin") { app.dock.setIcon(path.join(__dirname, 'img/logo.png')) };
 
 function createListener() {
@@ -184,13 +193,12 @@ function findKeyCode(key) {
 	for (item of keys) {
 		if (key.toLowerCase() == item.key || key == item.vKeyCode) {
 			return item.code
-			break;
 		}
 	}
 }
 function checkModifiers(mod) {
-	if(mod.length) {
-		for(item in mod) {
+	if (mod.length) {
+		for (item in mod) {
 			mod[item] = checkKey(mod[item]);
 		}
 		return mod
@@ -199,13 +207,17 @@ function checkModifiers(mod) {
 	}
 }
 function checkKey(key) {
-	switch(key) {
+	switch (key) {
 		case 'cmd':
 			return 'command';
 		case 'esc':
 			return 'escape';
 		case 'ctrl':
 			return 'control';
+		case 'page_up':
+			return 'pageup';
+		case 'page_down':
+			return 'pagedown'
 	}
 	return key.toLowerCase();
 }

@@ -60,7 +60,7 @@
 			border-color: #e2007a;
 		}
 
-		#changebtn {
+		#changeBtn {
 			height: 42px;
 			width: 120px;
 			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
@@ -75,20 +75,20 @@
 			border-width: 3px;
 		}
 
-		#changebtn:hover {
+		#changeBtn:hover {
 
 			cursor: pointer;
 			border-color: #e2007a;
 			background: #e2007a;
 		}
 
-		#changebtn:active {
+		#changeBtn:active {
 			transform: scale(.9, .9);
 			border-color: #e2007a;
 			background: #e2007a;
 		}
 
-		#changebtn:focus {
+		#changeBtn:focus {
 			outline: 0
 		}
 
@@ -99,6 +99,25 @@
 		::-moz-selection {
 			background: #e2007a;
 		}
+
+		#donateBtn {
+			position: fixed;
+			bottom: 0px;
+			right: 0px;
+			background: url(./img/red_logo.png) no-repeat 18px;
+			color: #fff;
+			text-decoration: none;
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+			display: inline-block;
+			font-size: 16px;
+			padding: 13px 17px;
+			padding-left: 56px;
+		}
+
+		#donateBtn:hover {
+			cursor: pointer;
+			border-color: #e2007a;
+		}
 	</style>
 </head>
 <h1><label id="version">Welcome!</label></h1>
@@ -106,18 +125,19 @@
 <p>The app will listen on port 10001 by default, but you can change that here:</p>
 <h3>Port number</h3>
 <input id="port" class="form-control text-input" value="10001">
-<input id="changebtn" type="button" value="Change">
+<input id="changeBtn" type="button" value="Change">
 <br>
 <p>Logs:</p>
-<textarea id='logs' rows="8" cols="40"></textarea>
+<textarea id='logs' rows="8" cols="40" disabled></textarea>
+<a id="donateBtn" href="https://donorbox.org/vicreo-listener?default_interval=o&amount=25">Donate</a>
 </body>
 
 </html>
 
 <script>
-	
+
 	const { ipcRenderer } = require('electron')
-	
+
 	ipcRenderer.on('log', (event, arg) => {
 		let today = new Date();
 		let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + " ";
@@ -129,7 +149,7 @@
 		document.getElementById('version').innerHTML = arg;
 	})
 
-	document.getElementById("changebtn").addEventListener("click", function () {
+	document.getElementById("changeBtn").addEventListener("click", function () {
 		var port = document.getElementById("port").value;
 		ipcRenderer.send('changePort', port)
 	});
