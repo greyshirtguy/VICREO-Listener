@@ -1,6 +1,6 @@
 {
 	"name": "VICREO-Listener",
-	"version": "2.0.6",
+	"version": "2.0.7",
 	"description": "Hotkey listener for Windows & macOS.",
 	"main": "main.js",
 	"scripts": {
@@ -9,13 +9,19 @@
 		"devstart": "electromon ./main.js",
 		"pack": "electron-builder --dir",
 		"release": "electron-builder -p always",
+		"macdist": "electron-builder --mac",
 		"lindist": "electron-builder --linux tar.gz -p always",
 		"rpidist": "electron-builder --armv7l --linux tar.gz -p always",
 		"postinstall": "electron-builder install-app-deps"
 	},
 	"build": {
+		"afterSign": "./notarize.js",
 		"appId": "nl.vicreo.listener",
 		"mac": {
+			"hardenedRuntime": true,
+			"gatekeeperAssess": false,
+			"entitlements": "build/entitlements.mac.plist",
+			"entitlementsInherit": "build/entitlements.mac.plist",
 			"category": "Keyboard emulator",
 			"icon": "img/icon.icns",
 			"extendInfo": {
@@ -41,6 +47,8 @@
 	},
 	"homepage": "https://github.com/JeffreyDavidsz/vicreo-listener#readme",
 	"dependencies": {
+		"dotenv": "^8.2.0",
+		"electron-notarize": "^1.0.0",
 		"node-osascript": "^2.1.0",
 		"robotjs": "^0.6.0"
 	},
