@@ -15,13 +15,8 @@
 		"postinstall": "electron-builder install-app-deps"
 	},
 	"build": {
-		"afterSign": "./notarize.js",
 		"appId": "nl.vicreo.listener",
 		"mac": {
-			"hardenedRuntime": true,
-			"gatekeeperAssess": false,
-			"entitlements": "build/entitlements.mac.plist",
-			"entitlementsInherit": "build/entitlements.mac.plist",
 			"category": "Keyboard emulator",
 			"icon": "img/icon.icns",
 			"extendInfo": {
@@ -47,12 +42,11 @@
 	},
 	"homepage": "https://github.com/JeffreyDavidsz/vicreo-listener#readme",
 	"dependencies": {
-		"dotenv": "^8.2.0",
-		"electron-notarize": "^1.0.0",
 		"node-osascript": "^2.1.0",
 		"robotjs": "^0.6.0"
 	},
 	"devDependencies": {
+		"dotenv": "^8.2.0",
 		"electromon": "^1.0.10",
 		"electron": "^9.0.2",
 		"electron-builder": "^21.2.0",
