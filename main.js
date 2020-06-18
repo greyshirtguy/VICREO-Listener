@@ -186,11 +186,11 @@ function createListener() {
 
 		// Try to parse data as JSON, when error returned try old syntax
 		socket.on('data', (data) => {
-			console.log(data)
+			console.log(data.toString())
 			try {
 				processIncomingData(JSON.parse(data))
 			} catch (e) {
-				if(data.charAt(0)=='<') {
+				if(data.toString().charAt(0)=='<') {
 					processIncomingData2(data)
 				} else {
 					console.log(e)
@@ -393,13 +393,11 @@ function processIncomingData(data) {
 function processIncomingData2(data) {
 	let incomingString = data.toString('utf8')
 	win.webContents.send('log', incomingString);
-	console.log(incomingString)
 	let key1, key2, key3
 	let type = incomingString.slice(1, incomingString.search('>'))
 	switch (type) {
 		case 'SK':
 			key1 = incomingString.slice(incomingString.search('>') + 1)
-			console.log(key1)
 			hitHotkey(key1, [])
 			break;
 		case 'SPK':

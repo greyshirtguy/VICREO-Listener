@@ -27,12 +27,6 @@
         "LSUIElement": 1
       }
     },
-    "linux": {
-      "target": [
-        "AppImage",
-        "deb"
-      ]
-    },
     "win": {
       "icon": "img/logo.png"
     }
