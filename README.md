@@ -122,3 +122,9 @@ Fill complete filepath without parentheses
 ----
 
 For additional actions, please raise a feature request on [GitHub](https://github.com/JeffreyDavidsz/VICREO-listener/issues).
+
+## NOTES ON BUILDING ##
+For OSX Building you need a valid Developer certificate, which you can only get from signing up for Apple's developer program.
+Install Developer ID Application certificate in your keychain, by creating a new certificate and downloading/open it in keychain
+run <pre><code>security find-identity -vp codesigning </pre></code> to check if the certificate can be found by electron builder.
+For CI Build do a <pre><code>base64 -i name.p12 -o output.txt</pre></code>
