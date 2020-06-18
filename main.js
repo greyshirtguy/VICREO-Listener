@@ -130,7 +130,7 @@ app.on('before_quit', () => {
 app.on('windows-all-closed', () => {
 	// On macOS it is common for applications and their menu bar
 	// to stay active until the user quits explicitly with Cmd + Q
-	if (os.platform() !== 'darwin') {
+	if (process.platform == "darwin") {
 		app.quit()
 	}
 })
@@ -224,7 +224,7 @@ function checkKey(key) {
 
 function processKeyDataOSX(key, modifiers) {
 	let script = null;
-	key = key.toLowerCase()
+	// key = key.toLowerCase()
 	let modifiersInString = '{'
 	for (item of modifiers) {
 		if (item == 'cmd') item = 'command';
@@ -289,6 +289,7 @@ function processIncomingData(data) {
 				}
 			} else {
 				if (process.platform == "darwin") {
+					console.log(processKeyDataOSX(data.key, data.modifiers))
 					osascript.execute(`tell application \"System Events\"\ntell process \"${data.processName}\"\nset frontmost to true\n` + processKeyDataOSX(data.key, data.modifiers) + '\nend tell\nend tell', function (err, result, raw) {
 						if (err) return console.error(err)
 						console.log(result, raw)
@@ -346,20 +347,20 @@ function processIncomingData2(data) {
 	console.log(incomingString)
 	let key1, key2, key3
 	let type = incomingString.slice(1, incomingString.search('>'))
-
 	switch (type) {
 		case 'SK':
 			key1 = incomingString.slice(incomingString.search('>') + 1)
-			hitHotkey(key1)
+			console.log(key1)
+			hitHotkey(key1,[])
 			break;
 		case 'SPK':
 			key1 = incomingString.slice(incomingString.search('>') + 1)
-			hitHotkey(key1)
+			hitHotkey(key1, [])
 			break;
 		case 'KCOMBO':
 			key1 = incomingString.slice(8, incomingString.search('<AND>'))
 			key2 = incomingString.slice(incomingString.search('<AND>') + 5)
-			hitHotkey(key2, key1)
+			hitHotkey(key2, [key1])
 			break;
 		case 'KTRIO':
 			key1 = incomingString.slice(7, incomingString.search('<AND>'))
@@ -383,16 +384,15 @@ function processIncomingData2(data) {
 	}
 }
 
-function hitHotkey(key, modifier) {
-	if (os.platform() === 'darwin') {
-		if (modifier) {
-			return exec(`Script="tell app \\"System Events\\" to keystroke ${key} using ${modifier} down" osascript -e "$Script"`)
-		} else {
-			return exec(`Script="tell app \\"System Events\\" to keystroke ${key}" osascript -e "$Script"`)
-		}
+function hitHotkey(key, modifiers) {
+	if (process.platform == "darwin") {
+		osascript.execute('tell application \"System Events\"\n' + processKeyDataOSX(key, modifiers) + '\nend tell', function (err, result, raw) {
+			if (err) return console.error(err)
+			console.log(result, raw)
+		});
 	} else {
-		if (modifier) {
-			return robot.keyTap(key, modifier)
+		if (modifiers) {
+			return robot.keyTap(key, modifiers)
 		} else {
 			return robot.keyTap(key)
 		}
