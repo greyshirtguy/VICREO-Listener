@@ -1,46 +1,50 @@
 matrix:
-  include:
-    - os: osx
-      osx_image: xcode10.2
-      language: node_js
-      node_js: "10"
+	include:
+		- os: osx
+			osx_image: xcode10.2
+			language: node_js
+			node_js: "10"
 
 branches:
-  only:
-  - master
+	only:
+	- master
 
 env:
-  global:
-    - ELECTRON_CACHE=$HOME/.cache/electron
-    - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+	global:
+		- ELECTRON_CACHE=$HOME/.cache/electron
+		- ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 
 cache:
-  directories:
-    - node_modules
-    - $HOME/.cache/electron
-    - $HOME/.cache/electron-builder
+	directories:
+		- node_modules
+		- $HOME/.cache/electron
+		- $HOME/.cache/electron-builder
 
 before_cache:
-  - rm -rf $HOME/.cache/electron-builder/wine
-
+	- rm -rf $HOME/.cache/electron-builder/wine
+		
+before_deploy:
+	- if [ "$TRAVIS_OS_NAME" = osx ]; then chmod +x add-osx-cert.sh; fi
+	- if [ "$TRAVIS_OS_NAME" = osx ]; then ./add-osx-cert.sh; fi
+	
 before_install:
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then 
-      sudo apt-get install libxtst-dev libpng++-dev; 
-    fi
-    
+	- if [ "$TRAVIS_OS_NAME" == "linux" ]; then 
+			sudo apt-get install libxtst-dev libpng++-dev; 
+		fi
+		
 script:
-  - |
-    if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-      docker run --rm \
-        -v ${PWD}:/project \
-        -v ~/.cache/electron:/root/.cache/electron \
-        -v ~/.cache/electron-builder:/root/.cache/electron-builder \
-        electronuserland/builder:wine \
-        /bin/bash -c "yarn --link-duplicates --pure-lockfile && yarn release --linux --win"
-    else
-      yarn release
-    fi
+	- |
+		if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+			docker run --rm \
+				-v ${PWD}:/project \
+				-v ~/.cache/electron:/root/.cache/electron \
+				-v ~/.cache/electron-builder:/root/.cache/electron-builder \
+				electronuserland/builder:wine \
+				/bin/bash -c "yarn --link-duplicates --pure-lockfile && yarn release --linux --win"
+		else
+			yarn release
+		fi
 
 branches:
-  except:
-    - "/^v\\d+\\.\\d+\\.\\d+$/"
+	except:
+		- "/^v\\d+\\.\\d+\\.\\d+$/"

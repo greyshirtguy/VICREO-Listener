@@ -1,53 +1,66 @@
 {
-	"name": "VICREO-Listener",
-	"version": "2.0.6",
-	"description": "Hotkey listener for Windows & macOS.",
-	"main": "main.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "electron .",
-		"devstart": "electromon ./main.js",
-		"pack": "electron-builder --dir",
-		"release": "electron-builder -p always",
-		"lindist": "electron-builder --linux tar.gz -p always",
-		"rpidist": "electron-builder --armv7l --linux tar.gz -p always",
-		"postinstall": "electron-builder install-app-deps"
-	},
-	"build": {
-		"appId": "nl.vicreo.listener",
-		"mac": {
-			"category": "Keyboard emulator",
-			"icon": "img/icon.icns",
-			"extendInfo": {
-				"LSUIElement": 1
-			}
-		},
-		"win": {
-			"icon": "img/logo.png"
-		}
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/JeffreyDavidsz/vicreo-listener.git"
-	},
-	"keywords": [
-		"Keyboard",
-		"mouse"
-	],
-	"author": "Jeffrey Davidsz",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/JeffreyDavidsz/vicreo-listener/issues"
-	},
-	"homepage": "https://github.com/JeffreyDavidsz/vicreo-listener#readme",
-	"dependencies": {
-		"node-osascript": "^2.1.0",
-		"robotjs": "^0.6.0"
-	},
-	"devDependencies": {
-		"electromon": "^1.0.10",
-		"electron": "^9.0.2",
-		"electron-builder": "^21.2.0",
-		"electron-rebuild": "^1.11.0"
-	}
+  "name": "VICREO-Listener",
+  "version": "2.0.7",
+  "description": "Hotkey listener for Windows & macOS.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "devstart": "electromon ./main.js",
+    "pack": "electron-builder --dir",
+    "release": "electron-builder -p always",
+    "macdist": "electron-builder --mac",
+    "lindist": "electron-builder --linux tar.gz -p always",
+    "rpidist": "electron-builder --armv7l --linux tar.gz -p always",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "build": {
+    "appId": "nl.vicreo.listener",
+    "mac": {
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "category": "Keyboard emulator",
+      "icon": "img/icon.icns",
+      "extendInfo": {
+        "LSUIElement": 1
+      }
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "icon": "img/logo.png"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JeffreyDavidsz/vicreo-listener.git"
+  },
+  "keywords": [
+    "Keyboard",
+    "mouse"
+  ],
+  "author": "Jeffrey Davidsz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JeffreyDavidsz/vicreo-listener/issues"
+  },
+  "homepage": "https://github.com/JeffreyDavidsz/vicreo-listener#readme",
+  "dependencies": {
+    "electron-notarize": "^1.0.0",
+    "node-osascript": "^2.1.0",
+    "dotenv": "^8.2.0",
+    "robotjs": "^0.6.0"
+  },
+  "devDependencies": {
+    "electromon": "^1.0.10",
+    "electron": "^9.0.2",
+    "electron-builder": "^21.2.0",
+    "electron-rebuild": "^1.11.0"
+  }
 }
