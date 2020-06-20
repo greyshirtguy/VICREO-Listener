@@ -103,7 +103,11 @@ const createWindow = () => {
 // Some APIs can only be used after this event occurs.
 // app.on('ready', createWindow);
 app.whenReady().then(() => {
-	tray = new Tray(path.join(__dirname, 'img/favicon.png'));
+	if (process.platform == "darwin") {
+		tray = new Tray(path.join(__dirname, 'img/macOSmenuiconTemplate.png'));
+	} else {
+		tray = new Tray(path.join(__dirname, 'img/favicon.png'));
+	}
 	createWindow();
 
 	// create tray menu when ready
@@ -161,7 +165,7 @@ app.on('before_quit', () => {
 	console.log('user quit')
 })
 
-if (process.platform == "darwin") { app.dock.setIcon(path.join(__dirname, 'img/logo.png')) };
+if (process.platform == "darwin") { app.dock.setIcon(path.join(__dirname, 'img/png/1024x1024.png')) };
 
 
 /**

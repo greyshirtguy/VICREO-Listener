@@ -12,13 +12,14 @@ const config = {
       "entitlements-inherit": "./static/entitlements.plist",
 			"identity": "Developer ID Application: VICREO BV (XS47984U9A)"
     },
-		"icon": "./src/img/icon.icns"
+		"icon": "./src/img/icon"
 	},
   makers: [
     {
-      name: "@electron-forge/maker-squirrel",
+			name: "@electron-forge/maker-squirrel",
       config: {
-        name: "vicreo_listener",
+				name: "vicreo_listener",
+				setupIcon: "./src/img/icon.ico"
       },
     },
     {
