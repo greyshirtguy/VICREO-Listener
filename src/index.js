@@ -104,7 +104,7 @@ const createWindow = () => {
 // app.on('ready', createWindow);
 app.whenReady().then(() => {
 	if (process.platform == "darwin") {
-		tray = new Tray(path.join(__dirname, 'img/macOSmenuiconTemplate.png'));
+		tray = new Tray(path.join(__dirname, 'img/favicon_mac.png'));
 	} else {
 		tray = new Tray(path.join(__dirname, 'img/favicon.png'));
 	}
@@ -282,14 +282,14 @@ function processKeyDataOSX(key, modifiers) {
 	let script = null;
 	// key = key.toLowerCase()
 	let modifiersInString = '{'
-	for (item of modifiers) {
-		if (item == 'cmd') item = 'command';
-		if (item == 'ctrl') item = 'control';
-		modifiersInString += item + ' down,';
+	for (item in modifiers) {
+		if (modifiers[item] == 'cmd') {modifiers[item] = 'command'};
+		if (modifiers[item] == 'ctrl') {modifiers[item] = 'control'};
+		modifiersInString += modifiers[item] + ' down,';
 	}
 	modifiersInString = modifiersInString.substring(0, modifiersInString.length - 1)
 	modifiersInString += '}'
-
+	
 	if (modifiers.length) {
 		if (key.length > 1) {
 			script = `key code ${findKeyCode(key)} using ${modifiersInString}`;
@@ -465,6 +465,7 @@ const keys = [
 	{ key: 'cmd', code: 55, vKeyCode: '0x37' },
 	{ key: 'command', code: 55, vKeyCode: '0x37' },
 	{ key: 'alt', code: 58, vKeyCode: '0x3A' },
+	{ key: 'tab', code: 48, vKeyCode: '0x30' },
 	{ key: 'option', code: 58, vKeyCode: '0x3A' },
 	{ key: 'ctrl', code: 59, vKeyCode: '0x3B' },
 	{ key: 'control', code: 59, vKeyCode: '0x3B' },
