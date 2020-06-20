@@ -6,25 +6,25 @@ const config = {
   packagerConfig: {
     asar: true,
     osxSign: {
-			"hardened-runtime": true,
+      "hardened-runtime": true,
       "gatekeeper-assess": false,
       "entitlements": "./static/entitlements.plist",
       "entitlements-inherit": "./static/entitlements.plist",
-			"identity": "Developer ID Application: VICREO BV (XS47984U9A)"
+      "identity": "Developer ID Application: VICREO BV (XS47984U9A)"
     },
-		"icon": "./src/img/icon"
-	},
+    "icon": "./src/img/icon"
+  },
   makers: [
     {
-			name: "@electron-forge/maker-squirrel",
+      name: "@electron-forge/maker-squirrel",
       config: {
-				name: "vicreo_listener",
-				setupIcon: "./src/img/icon.ico"
+        name: "vicreo_listener",
+        setupIcon: "./src/img/icon.ico"
       },
     },
     {
       name: "@electron-forge/maker-zip",
-			platforms: ["darwin"],
+      platforms: ["darwin"],
     },
     {
       name: "@electron-forge/maker-deb",
