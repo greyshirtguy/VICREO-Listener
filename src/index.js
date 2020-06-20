@@ -1,16 +1,15 @@
-/* eslint no-console: 'off' */
-const { app, BrowserWindow, Menu, Tray, shell } = require("electron") // app
-const osascript = require('node-osascript');
-const net = require("net") // TCP server
-const robot = require('robotjs') // keyboard and mouse events
-const child_process = require('child_process') // Shell and file actions
-const path = require('path')
-const version = require('./package.json').version
-const iconpath = path.join(__dirname, 'img/favicon.png')
-const { ipcMain } = require('electron')
-let tray = null
-let server
-let win
+const { app, BrowserWindow, Menu, Tray, shell } = require("electron"); // app
+const path = require('path');
+const osascript = require("node-osascript");
+const net = require("net"); // TCP server
+const robot = require('robotjs'); // keyboard and mouse events
+const child_process = require('child_process'); // Shell and file actions
+const version = require('../package.json').version;
+const iconpath = path.join(__dirname, 'img/favicon.png');
+const { ipcMain } = require('electron');
+let tray = null;
+let server;
+let mainWindow;
 let port = 10001; // Standard port
 
 /**
@@ -21,59 +20,17 @@ let port = 10001; // Standard port
 * { "type":"string","msg":"C:/Barco/InfoT1413.pdf" }
 */
 
+// Handle creating/removing shortcuts on Windows when installing/uninstalling.
+if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
+  app.quit();
+}
+
 process.on('uncaughtException', (err) => {
 	// if (error.code === 'ERR_BUFFER_OUT_OF_BOUNDS' ) {
 	//	 // ...
 	// } 
 	console.error(err)
 });
-
-/**
- * Create the main window for the listener
- *
- */
-function createWindow() {
-	// create window
-	win = new BrowserWindow({
-		width: 410,
-		height: 750,
-		resizable: false,
-		icon: iconpath,
-		webPreferences: {
-			nodeIntegration: true
-		}
-	})
-
-	win.setMenu(null)
-	// main process
-	// load the index.html of the app
-	win.loadFile('screen.html')
-
-	win.on('minimize', function (event) {
-		event.preventDefault();
-		win.hide();
-	});
-
-	win.on('close', function (event) {
-		if (!app.isQuiting) {
-			event.preventDefault();
-			win.hide();
-		}
-
-		return false;
-	});
-
-	win.on('activate', function () {
-		// appIcon.setHighlightMode('always')
-		win.show()
-	})
-
-	win.on('closed', () => {
-		// kill windows or so
-		win = null
-	})
-	createListener()
-}
 
 // Catch change port message from front-ed.
 ipcMain.on('changePort', (event, arg) => {
@@ -85,6 +42,66 @@ ipcMain.on('changePort', (event, arg) => {
 	}
 })
 
+/**
+ * Handle of a user clicking on a link, this action needs a new window/browser
+ *
+ * @param {object} e 
+ * @param {string} url
+ */
+let handleRedirect = (e, url) => {
+	if (url != mainWindow.webContents.getURL()) {
+		e.preventDefault()
+		shell.openExternal(url)
+	}
+}
+
+const createWindow = () => {
+  // Create the browser window.
+  mainWindow = new BrowserWindow({
+		width: 410,
+		height: 750,
+		resizable: false,
+		icon: iconpath,
+		webPreferences: {
+			nodeIntegration: true
+		}
+  });
+  
+	mainWindow.setMenu(null)
+
+  // and load the index.html of the app.
+  mainWindow.loadFile(path.join(__dirname, 'screen.html'));
+
+  mainWindow.on('minimize', function (event) {
+		event.preventDefault();
+		mainWindow.hide();
+	});
+
+	mainWindow.on('close', function (event) {
+		if (!app.isQuiting) {
+			event.preventDefault();
+			mainWindow.hide();
+		}
+
+		return false;
+	});
+
+	mainWindow.on('activate', function () {
+		// appIcon.setHighlightMode('always')
+		mainWindow.show()
+	})
+
+	mainWindow.on('closed', () => {
+		// kill windows or so
+		mainWindow = null
+	})
+  createListener();
+};
+
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// Some APIs can only be used after this event occurs.
+// app.on('ready', createWindow);
 app.whenReady().then(() => {
 	tray = new Tray(path.join(__dirname, 'img/favicon.png'));
 	createWindow();
@@ -93,7 +110,7 @@ app.whenReady().then(() => {
 	let contextMenu = Menu.buildFromTemplate([
 		{
 			label: 'Show App', click: function () {
-				win.show()
+				mainWindow.show()
 			}
 		},
 		{
@@ -110,29 +127,32 @@ app.whenReady().then(() => {
 	])
 	tray.setContextMenu(contextMenu)
 
-	win.webContents.on('dom-ready', () => {
+	mainWindow.webContents.on('dom-ready', () => {
 		// When the DOM is ready we will send the version of the app
-		win.webContents.send('version', 'Version: ' + version);
+		mainWindow.webContents.send('version', 'Version: ' + version);
 	});
 
 	// When a user click on a link
-	win.webContents.on('will-navigate', handleRedirect)
-	win.webContents.on('new-window', handleRedirect)
+	mainWindow.webContents.on('will-navigate', handleRedirect)
+	mainWindow.webContents.on('new-window', handleRedirect)
 })
 
+// Quit when all windows are closed.
+app.on('window-all-closed', () => {
+  // On OS X it is common for applications and their menu bar
+  // to stay active until the user quits explicitly with Cmd + Q
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
 
-/**
- * Handle of a user clicking on a link, this action needs a new window/browser
- *
- * @param {object} e 
- * @param {string} url
- */
-let handleRedirect = (e, url) => {
-	if (url != win.webContents.getURL()) {
-		e.preventDefault()
-		shell.openExternal(url)
-	}
-}
+app.on('activate', () => {
+  // On OS X it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow();
+  }
+});
 
 app.on('before_quit', () => {
 	// Close server before quiting
@@ -141,30 +161,15 @@ app.on('before_quit', () => {
 	console.log('user quit')
 })
 
-app.on('windows-all-closed', () => {
-	// On macOS it is common for applications and their menu bar
-	// to stay active until the user quits explicitly with Cmd + Q
-	if (process.platform == "darwin") {
-		app.quit()
-	}
-})
-
-app.on('activate', () => {
-	// On macOS it's common to re-create a window in the app when the
-	// dock icon is clicked and there are no other windows open.
-	if (win === null) {
-		createWindow()
-	}
-})
-
 if (process.platform == "darwin") { app.dock.setIcon(path.join(__dirname, 'img/logo.png')) };
+
 
 /**
  * Main function for creating the TCP listener
  */
 function createListener() {
 	// Load socket
-	win.webContents.send('log', 'waiting for connection...');
+	mainWindow.webContents.send('log', 'waiting for connection...');
 
 	// Create UDP?
 	server = net.createServer((socket) => {
@@ -172,16 +177,16 @@ function createListener() {
 		socket.pipe(socket);
 
 		console.log("connected")
-		win.webContents.send('log', 'connected');
+		mainWindow.webContents.send('log', 'connected');
 		
 		socket.on('end', () => {
 			console.log('client ended connection, waiting for connection...')
-			win.webContents.send('log', 'client ended connection, waiting for connection...');
+			mainWindow.webContents.send('log', 'client ended connection, waiting for connection...');
 		})
 
 		socket.on('connect', () => {
 			console.log("connected")
-			win.webContents.send('log', 'connected');
+			mainWindow.webContents.send('log', 'connected');
 		})
 
 		// Try to parse data as JSON, when error returned try old syntax
@@ -303,7 +308,7 @@ function processKeyDataOSX(key, modifiers) {
  * @param {object} - JSON data to process
  */
 function processIncomingData(data) {
-	win.webContents.send('log', JSON.stringify(data));
+	mainWindow.webContents.send('log', JSON.stringify(data));
 	switch (data.type) {
 		case 'press':
 			if (process.platform == "darwin") {
@@ -352,14 +357,14 @@ function processIncomingData(data) {
 		case 'shell':
 			child_process.exec(data.shell, (error, stdout, stderr) => {
 				if (error) {
-					win.webContents.send('log', `error: ${error.message}`);
+					mainWindow.webContents.send('log', `error: ${error.message}`);
 					return;
 				}
 				if (stderr) {
-					win.webContents.send('log', `stderr: ${stderr}`);
+					mainWindow.webContents.send('log', `stderr: ${stderr}`);
 					return;
 				}
-				win.webContents.send('log', `stdout: ${stdout}`);
+				mainWindow.webContents.send('log', `stdout: ${stdout}`);
 			})
 			break;
 
@@ -392,7 +397,7 @@ function processIncomingData(data) {
 }
 function processIncomingData2(data) {
 	let incomingString = data.toString('utf8')
-	win.webContents.send('log', incomingString);
+	mainWindow.webContents.send('log', incomingString);
 	let key1, key2, key3
 	let type = incomingString.slice(1, incomingString.search('>'))
 	switch (type) {
@@ -429,10 +434,10 @@ function processIncomingData2(data) {
 			robot.typeString(incomingString.slice(incomingString.search('>') + 1))
 			break;
 		case 'FILE':
-			win.webContents.send('log', 'please change to new syntax');
+			mainWindow.webContents.send('log', 'please change to new syntax');
 			break;
 		case 'SHELL':
-			win.webContents.send('log', 'please change to new syntax');
+			mainWindow.webContents.send('log', 'please change to new syntax');
 			break;
 	}
 }
@@ -557,3 +562,4 @@ const keys = [
 	{ key: '8', code: 28, vKeyCode: '0x1C' },
 	{ key: '9', code: 25, vKeyCode: '0x19' },
 ]
+
