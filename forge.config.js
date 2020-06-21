@@ -1,15 +1,10 @@
 require('dotenv').config();
 const config = {
-  hooks: {
-    postPackage: require('./src/hooks/notarize.js')
-  },
   packagerConfig: {
     asar: true,
     osxSign: {
       "hardened-runtime": true,
       "gatekeeper-assess": false,
-      "entitlements": "./static/entitlements.plist",
-      "entitlements-inherit": "./static/entitlements.plist",
       "identity": "Developer ID Application: VICREO BV (XS47984U9A)"
     },
     "icon": "./src/img/icon"
