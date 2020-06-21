@@ -28,16 +28,16 @@
     "dotenv": "^8.2.0",
     "electron-notarize": "^1.0.0",
     "electron-squirrel-startup": "^1.0.0",
-    "node-osascript": "^2.1.0",
-    "robotjs": "^0.6.0"
+    "robotjs": "^0.6.0",
+    "run-applescript": "^4.0.0"
   },
   "devDependencies": {
-    "@electron-forge/publisher-github": "^6.0.0-beta.51",
     "@electron-forge/cli": "6.0.0-beta.51",
     "@electron-forge/maker-deb": "6.0.0-beta.51",
     "@electron-forge/maker-rpm": "6.0.0-beta.51",
     "@electron-forge/maker-squirrel": "6.0.0-beta.51",
     "@electron-forge/maker-zip": "6.0.0-beta.51",
+    "@electron-forge/publisher-github": "^6.0.0-beta.51",
     "electromon": "^1.0.10",
     "electron": "9.0.4",
     "electron-rebuild": "^1.11.0"

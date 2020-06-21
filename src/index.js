@@ -1,6 +1,6 @@
 const { app, BrowserWindow, Menu, Tray, shell } = require("electron"); // app
 const path = require('path');
-const osascript = require("node-osascript");
+const runApplescript = require("run-applescript");
 const net = require("net"); // TCP server
 const robot = require('robotjs'); // keyboard and mouse events
 const child_process = require('child_process'); // Shell and file actions
@@ -316,10 +316,10 @@ function processIncomingData(data) {
 	switch (data.type) {
 		case 'press':
 			if (process.platform == "darwin") {
-				osascript.execute('tell application \"System Events\"\n' + processKeyDataOSX(data.key, data.modifiers) + '\nend tell', function (err, result, raw) {
-					if (err) return console.error(err)
-					console.log(result, raw)
-				});
+				(async () => {
+					const result = await runApplescript('tell application \"System Events\"\n' + processKeyDataOSX(data.key, data.modifiers) + '\nend tell');
+					console.log(result);
+				})();
 			} else {
 				robot.keyTap(checkKey(data.key), checkModifiers(data.modifiers))
 			}
@@ -341,18 +341,17 @@ function processIncomingData(data) {
 			let script = null;
 			if (data.processName == 'null' || data.processName == '') {
 				if (process.platform == "darwin") {
-					osascript.execute('tell application \"System Events\"\n' + processKeyDataOSX(data.key, data.modifiers) + '\nend tell', function (err, result, raw) {
-						if (err) return console.error(err)
-						console.log(result, raw)
-					});
+					(async () => {
+						const result = await runApplescript('tell application \"System Events\"\n' + processKeyDataOSX(data.key, data.modifiers) + '\nend tell');
+						console.log(result);
+					})();
 				}
 			} else {
 				if (process.platform == "darwin") {
-					console.log(processKeyDataOSX(data.key, data.modifiers))
-					osascript.execute(`tell application \"System Events\"\ntell process \"${data.processName}\"\nset frontmost to true\n` + processKeyDataOSX(data.key, data.modifiers) + '\nend tell\nend tell', function (err, result, raw) {
-						if (err) return console.error(err)
-						console.log(result, raw)
-					});
+					(async () => {
+						const result = await runApplescript(`tell application \"System Events\"\ntell process \"${data.processName}\"\nset frontmost to true\n` + processKeyDataOSX(data.key, data.modifiers) + '\nend tell\nend tell');
+						console.log(result);
+					})();
 				}
 			}
 
