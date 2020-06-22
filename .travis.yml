@@ -6,6 +6,10 @@ os:
 dist: bionic
 osx_image: xcode10.1
 
+before_install: 
+  - "if [ \"$TRAVIS_OS_NAME\" = osx ]; then chmod +x ./add-osx-cert.sh; fi"
+  - "if [ \"$TRAVIS_OS_NAME\" = osx ]; then ./add-osx-cert.sh; fi"
+
 cache:
   npm: true
   yarn: true
