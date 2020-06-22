@@ -32,6 +32,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: QHN3cMjhdFlzAJorXZXnE0smUAC8K+VCm5lyB/L7Zwe+ADZc7JdxKkDBF/NDZPQ6
+  artifact: artifact.txt
   draft: true
   prerelease: false
   Force update: true
