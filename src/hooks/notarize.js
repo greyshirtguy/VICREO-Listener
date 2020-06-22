@@ -9,7 +9,6 @@ const buildOutput = require('path').resolve(
     'VICREO-Listener-darwin-x64',
     'VICREO-Listener.app'
 );
-console.log("path",buildOutput);
 
 module.exports = function () {
     if (process.platform !== 'darwin') {
