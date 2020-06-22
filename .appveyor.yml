@@ -26,15 +26,20 @@ test_script:
 build_script:
 - IF %APPVEYOR_REPO_TAG% EQU true yarn release
 
+build:
+  publish_wap: true
+  verbosity: minimal
+  
 deploy:
-  release: product release of v$(appveyor_build_version)
+  release: product release of VICREO
   description: ''
   provider: GitHub
   auth_token:
     secure: QHN3cMjhdFlzAJorXZXnE0smUAC8K+VCm5lyB/L7Zwe+ADZc7JdxKkDBF/NDZPQ6
-  artifact: artifact.txt
+  artifact: 
+    path: Auto
   draft: true
   prerelease: false
   Force update: true
   on:
-    branch: master                 # release from master branch only
+    branch: master
