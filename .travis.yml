@@ -1,36 +1,29 @@
-  before_cache: 
-    - "rm -rf $HOME/.cache/electron-builder/wine"
-  before_install: 
-    - "if [ \"$TRAVIS_OS_NAME\" = osx ]; then chmod +x ./add-osx-cert.sh; fi"
-    - "if [ \"$TRAVIS_OS_NAME\" = osx ]; then ./add-osx-cert.sh; fi"
-    - "if [ \"$TRAVIS_OS_NAME\" == \"linux\" ]; then sudo apt-get install libxtst-dev libpng++-dev; fi"
-  branches: 
-    except: 
-      - /^v\d+\.\d+\.\d+$/
-  cache: 
-    directories: 
-      - node_modules
-      - $HOME/.cache/electron
-  env: 
-    global: 
-      - ELECTRON_CACHE=$HOME/.cache/electron
-  matrix: 
-    include: 
-      - 
-        language: node_js
-        node_js: "10"
-        os: osx
-        osx_image: xcode10.2
-  script: 
-    - |
-        if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-          docker run --rm \
-            -v ${PWD}:/project \
-            -v ~/.cache/electron:/root/.cache/electron \
-            -v ~/.cache/electron-builder:/root/.cache/electron-builder \
-            electronuserland/builder:wine \
-            /bin/bash -c "yarn --link-duplicates --pure-lockfile && yarn make --linux --win"
-        else
-          yarn make
-        fi
-  
+language: node_js
+node_js: "10"
+os:
+- linux
+- osx
+dist: bionic
+osx_image: xcode10.1
+
+cache:
+  npm: true
+  yarn: true
+  directories:
+  - $HOME/.cache/electron
+
+addons:
+  apt:
+    packages:
+    - fakeroot
+    - rpm
+    - libxtst-dev
+    - libpng++-dev
+
+branches:
+  only:
+  - master
+  - /^v\d+\.\d+\.\d+/
+
+script:
+- npm run release
