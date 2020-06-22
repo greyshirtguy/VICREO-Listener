@@ -33,8 +33,8 @@ build_script:
 - IF %APPVEYOR_REPO_TAG% EQU true yarn release
 
 artifacts:
-- path: 'test.zip'
-- path: logs
+  - path: out/make/squirrel.windows/x64/*.exe
+    name: Installer
 
 deploy:
   release: product release of VICREO
