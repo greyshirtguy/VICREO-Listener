@@ -26,9 +26,8 @@ test_script:
 build_script:
 - IF %APPVEYOR_REPO_TAG% EQU true yarn release
 
-build:
-  publish_wap: true
-  verbosity: minimal
+artifacts:
+- path: '*.zip'
 
 deploy:
   release: product release of VICREO
