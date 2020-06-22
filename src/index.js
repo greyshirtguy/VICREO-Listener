@@ -312,7 +312,7 @@ function processKeyDataOSX(key, modifiers) {
  * @param {object} - JSON data to process
  */
 function processIncomingData(data) {
-	mainWindow.webContents.send('log', JSON.stringify(data));
+	mainWindow.webContents.send('log', 'received: '+JSON.stringify(data));
 	switch (data.type) {
 		case 'press':
 			if (process.platform == "darwin") {
@@ -400,7 +400,7 @@ function processIncomingData(data) {
 }
 function processIncomingData2(data) {
 	let incomingString = data.toString('utf8')
-	mainWindow.webContents.send('log', incomingString);
+	mainWindow.webContents.send('log', 'received: ' + incomingString);
 	let key1, key2, key3
 	let type = incomingString.slice(1, incomingString.search('>'))
 	switch (type) {
@@ -447,10 +447,10 @@ function processIncomingData2(data) {
 
 function hitHotkey(key, modifiers) {
 	if (process.platform == "darwin") {
-		osascript.execute('tell application \"System Events\"\n' + processKeyDataOSX(key, modifiers) + '\nend tell', function (err, result, raw) {
-			if (err) return console.error(err)
-			console.log(result, raw)
-		});
+		(async () => {
+			const result = await runApplescript('tell application \"System Events\"\n' + processKeyDataOSX(key, modifiers) + '\nend tell');
+			console.log(result);
+		})();
 	} else {
 		if (modifiers) {
 			return robot.keyTap(key, modifiers)
