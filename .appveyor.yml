@@ -4,7 +4,7 @@ environment:
   nodejs_version: "12"
 cache:
 - '%APPDATA%\npm-cache'
-- "%APPDATA%\Yarn"
+- '"%APPDATA%\Yarn"'
 - '%USERPROFILE%\.electron'
 - node_modules
 branches:
