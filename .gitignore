@@ -1,4 +1,7 @@
 
+# extra
+windows_signing.pfx
+
 # Logs
 logs
 *.log

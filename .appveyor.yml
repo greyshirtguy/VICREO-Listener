@@ -4,7 +4,7 @@ platform:
 environment:
   nodejs_version: "12"
 
-  cache:
+cache:
 - '%APPDATA%\npm-cache'
 - '%APPDATA%\Yarn'
 - '%USERPROFILE%\.electron'
@@ -15,7 +15,7 @@ branches:
   - master
   - /^v\d+\.\d+\.\d+/
 
-  skip_tags: true
+skip_tags: true
 
 install:
 - ps: Install-Product node $env:nodejs_version $env:platform
@@ -30,6 +30,7 @@ test_script:
 - if %APPVEYOR_REPO_TAG% EQU false yarn make
 
 build_script:
+- echo %CERTIFICATE_WINDOWS_PFX% | base64.exe -di > windows_signing.pfx
 - IF %APPVEYOR_REPO_TAG% EQU true yarn release
 
 artifacts:
