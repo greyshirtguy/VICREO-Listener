@@ -7,6 +7,7 @@ const child_process = require('child_process'); // Shell and file actions
 const version = require('../package.json').version;
 const iconpath = path.join(__dirname, 'img/favicon.png');
 const { ipcMain } = require('electron');
+const os = require('os');
 let tray = null;
 let server;
 let mainWindow;
@@ -134,6 +135,14 @@ app.whenReady().then(() => {
 	mainWindow.webContents.on('dom-ready', () => {
 		// When the DOM is ready we will send the version of the app
 		mainWindow.webContents.send('version', 'Version: ' + version);
+		// Get the local IP Addresses
+		for (let [key, value] of Object.entries(os.networkInterfaces())) {
+			value.forEach(element => {
+				if(element.family == 'IPv4' && element.address != '127.0.0.1') {
+					mainWindow.webContents.send('log', 'Found IPv4 address: ' + element.address);
+				}
+			});
+		}
 	});
 
 	// When a user click on a link
