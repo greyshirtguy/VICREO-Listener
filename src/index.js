@@ -23,7 +23,7 @@ let port = 10001; // Standard port
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
-  app.quit();
+	app.quit();
 }
 
 process.on('uncaughtException', (err) => {
@@ -57,8 +57,8 @@ let handleRedirect = (e, url) => {
 }
 
 const createWindow = () => {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({
+	// Create the browser window.
+	mainWindow = new BrowserWindow({
 		width: 410,
 		height: 750,
 		resizable: false,
@@ -66,14 +66,14 @@ const createWindow = () => {
 		webPreferences: {
 			nodeIntegration: true
 		}
-  });
-  
+	});
+
 	mainWindow.setMenu(null)
 
-  // and load the index.html of the app.
-  mainWindow.loadFile(path.join(__dirname, 'screen.html'));
+	// and load the index.html of the app.
+	mainWindow.loadFile(path.join(__dirname, 'screen.html'));
 
-  mainWindow.on('minimize', function (event) {
+	mainWindow.on('minimize', function (event) {
 		event.preventDefault();
 		mainWindow.hide();
 	});
@@ -96,7 +96,7 @@ const createWindow = () => {
 		// kill windows or so
 		mainWindow = null
 	})
-  createListener();
+	createListener();
 };
 
 // This method will be called when Electron has finished
@@ -138,7 +138,7 @@ app.whenReady().then(() => {
 		// Get the local IP Addresses
 		for (let [key, value] of Object.entries(os.networkInterfaces())) {
 			value.forEach(element => {
-				if(element.family == 'IPv4' && element.address != '127.0.0.1') {
+				if (element.family == 'IPv4' && element.address != '127.0.0.1') {
 					mainWindow.webContents.send('log', 'Found IPv4 address: ' + element.address);
 				}
 			});
@@ -152,19 +152,19 @@ app.whenReady().then(() => {
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+	// On OS X it is common for applications and their menu bar
+	// to stay active until the user quits explicitly with Cmd + Q
+	if (process.platform !== 'darwin') {
+		app.quit();
+	}
 });
 
 app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
+	// On OS X it's common to re-create a window in the app when the
+	// dock icon is clicked and there are no other windows open.
+	if (BrowserWindow.getAllWindows().length === 0) {
+		createWindow();
+	}
 });
 
 app.on('before_quit', () => {
@@ -191,7 +191,7 @@ function createListener() {
 
 		console.log("connected")
 		mainWindow.webContents.send('log', 'connected');
-		
+
 		socket.on('end', () => {
 			console.log('client ended connection, waiting for connection...')
 			mainWindow.webContents.send('log', 'client ended connection, waiting for connection...');
@@ -208,7 +208,7 @@ function createListener() {
 			try {
 				processIncomingData(JSON.parse(data))
 			} catch (e) {
-				if(data.toString().charAt(0)=='<') {
+				if (data.toString().charAt(0) == '<') {
 					processIncomingData2(data)
 				} else {
 					console.log(e)
@@ -292,13 +292,13 @@ function processKeyDataOSX(key, modifiers) {
 	// key = key.toLowerCase()
 	let modifiersInString = '{'
 	for (item in modifiers) {
-		if (modifiers[item] == 'cmd') {modifiers[item] = 'command'};
-		if (modifiers[item] == 'ctrl') {modifiers[item] = 'control'};
+		if (modifiers[item] == 'cmd') { modifiers[item] = 'command' };
+		if (modifiers[item] == 'ctrl') { modifiers[item] = 'control' };
 		modifiersInString += modifiers[item] + ' down,';
 	}
 	modifiersInString = modifiersInString.substring(0, modifiersInString.length - 1)
 	modifiersInString += '}'
-	
+
 	if (modifiers.length) {
 		if (key.length > 1) {
 			script = `key code ${findKeyCode(key)} using ${modifiersInString}`;
@@ -321,7 +321,7 @@ function processKeyDataOSX(key, modifiers) {
  * @param {object} - JSON data to process
  */
 function processIncomingData(data) {
-	mainWindow.webContents.send('log', 'received: '+JSON.stringify(data));
+	mainWindow.webContents.send('log', 'received: ' + JSON.stringify(data));
 	switch (data.type) {
 		case 'press':
 			if (process.platform == "darwin") {
