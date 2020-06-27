@@ -12,6 +12,9 @@ const config = {
       "entitlements-inherit": "./static/entitlements.plist",
       "identity": "Developer ID Application: VICREO BV (XS47984U9A)"
     },
+    "extendInfo": {
+      "LSUIElement": 1
+    },
 		"icon": "./src/img/icon"
   },
   makers: [
