@@ -105,7 +105,7 @@ const createWindow = () => {
 // app.on('ready', createWindow);
 app.whenReady().then(() => {
 	if (process.platform == "darwin") {
-		tray = new Tray(path.join(__dirname, 'img/favicon_mac.png'));
+		tray = new Tray(path.join(__dirname, 'img/macOSmenuiconTemplate@2x.png'));
 	} else {
 		tray = new Tray(path.join(__dirname, 'img/favicon.png'));
 	}
