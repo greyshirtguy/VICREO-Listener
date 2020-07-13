@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, Tray, shell } = require("electron"); // app
+const { app, BrowserWindow, Menu, Tray, shell, powerMonitor } = require("electron"); // app
 const path = require('path');
 const runApplescript = require("run-applescript");
 const net = require("net"); // TCP server
@@ -172,6 +172,10 @@ app.on('before_quit', () => {
 	isQuiting = true
 	server.close()
 	console.log('user quit')
+})
+
+powerMonitor.on('shutdown', () => {
+	app.quit();
 })
 
 if (process.platform == "darwin") { app.dock.setIcon(path.join(__dirname, 'img/png/1024x1024.png')) };
