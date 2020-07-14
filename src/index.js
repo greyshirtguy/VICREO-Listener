@@ -148,6 +148,12 @@ app.whenReady().then(() => {
 	// When a user click on a link
 	mainWindow.webContents.on('will-navigate', handleRedirect)
 	mainWindow.webContents.on('new-window', handleRedirect)
+
+	
+	powerMonitor.on('shutdown', () => {
+		app.quit();
+	})
+
 })
 
 // Quit when all windows are closed.
@@ -172,10 +178,6 @@ app.on('before_quit', () => {
 	isQuiting = true
 	server.close()
 	console.log('user quit')
-})
-
-powerMonitor.on('shutdown', () => {
-	app.quit();
 })
 
 if (process.platform == "darwin") { app.dock.setIcon(path.join(__dirname, 'img/png/1024x1024.png')) };
@@ -398,7 +400,7 @@ function processIncomingData(data) {
 					console.log(stdout);
 				})
 			} else {
-				child_process.exec('start ' + data.path, function (err, stdout, stderr) {
+				child_process.exec('\"' + data.path + '\"', function (err, stdout, stderr) {
 					if (err) {
 						console.error(err);
 						return;
