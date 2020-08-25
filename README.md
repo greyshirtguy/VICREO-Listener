@@ -46,7 +46,7 @@ To perform a shell command on the system;
 <pre><code>{ "type":"shell","shell":"dir" }</code></pre>
 
 ### Example processOSX
-<pre><code>{ "key":"tab", "type":"processOSX","processName":"Microsoft PowerPoint", "modifier":["alt"] }</code></pre>
+<pre><code>{ "key":"tab", "type":"processOSX","processName":"Microsoft PowerPoint", "modifiers":["alt"] }</code></pre>
 
 ## Keys ##
 
