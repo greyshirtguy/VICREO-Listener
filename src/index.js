@@ -8,11 +8,16 @@ const version = require('../package.json').version;
 const iconpath = path.join(__dirname, 'img/favicon.png');
 const { ipcMain } = require('electron');
 const os = require('os');
+const Store = require('electron-store');
+const store = new Store()
 let tray = null;
 let server;
 let mainWindow;
-let port = 10001; // Standard port
-
+if (store.get('customport') != undefined ) {
+	port = store.get('customport');
+} else {
+	port = 10001 // Standard port
+}
 /**
 * { "key":"tab", "type":"press", "modifiers":["alt"] }
 * { "key":"tab", "type":"processOSX","processName":"Powerpoint" "modifier":["alt"] }
@@ -37,6 +42,7 @@ process.on('uncaughtException', (err) => {
 ipcMain.on('changePort', (event, arg) => {
 	if (arg != port) {
 		port = arg;
+		store.set('customport', port);
 		console.log(`port number changed to ${port}, closing server`);
 		server.close();
 		createListener();
@@ -134,6 +140,7 @@ app.whenReady().then(() => {
 
 	mainWindow.webContents.on('dom-ready', () => {
 		// When the DOM is ready we will send the version of the app
+		mainWindow.webContents.send('initport', port);
 		mainWindow.webContents.send('version', 'Version: ' + version);
 		// Get the local IP Addresses
 		for (let [key, value] of Object.entries(os.networkInterfaces())) {
@@ -183,7 +190,6 @@ if (process.platform == "darwin") { app.dock.setIcon(path.join(__dirname, 'img/p
 function createListener() {
 	// Load socket
 	mainWindow.webContents.send('log', 'waiting for connection...');
-
 	// Create UDP?
 	server = net.createServer((socket) => {
 		socket.write('Listener active\r\n');

@@ -129,7 +129,7 @@
 <p>You can close this screen, and the app will remain open in the system tray (Windows) or the menu bar (macOS).</p>
 <p>The app will listen on port 10001 by default, but you can change that here:</p>
 <h3>Port number</h3>
-<input id="port" class="form-control text-input" value="10001">
+<input id="port" class="form-control text-input" value="">
 <input id="changeBtn" type="button" value="Change">
 <br>
 <p>Logs:</p>
@@ -142,6 +142,10 @@
 <script>
 
 	const { ipcRenderer } = require('electron')
+
+	ipcRenderer.on('initport', (event, arg) => {
+		document.getElementById('port').value = arg;
+	})
 
 	ipcRenderer.on('log', (event, arg) => {
 		let today = new Date();
