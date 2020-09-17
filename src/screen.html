@@ -118,13 +118,18 @@
 			cursor: pointer;
 			border-color: #e2007a;
 		}
+
+		textarea {
+			resize: none; 
+			padding: 5px;
+		}
 	</style>
 </head>
 <h1><label id="version">Welcome!</label></h1>
 <p>You can close this screen, and the app will remain open in the system tray (Windows) or the menu bar (macOS).</p>
 <p>The app will listen on port 10001 by default, but you can change that here:</p>
 <h3>Port number</h3>
-<input id="port" class="form-control text-input" value="10001">
+<input id="port" class="form-control text-input" value="">
 <input id="changeBtn" type="button" value="Change">
 <br>
 <p>Logs:</p>
@@ -138,9 +143,13 @@
 
 	const { ipcRenderer } = require('electron')
 
+	ipcRenderer.on('initport', (event, arg) => {
+		document.getElementById('port').value = arg;
+	})
+
 	ipcRenderer.on('log', (event, arg) => {
 		let today = new Date();
-		let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + " ";
+		let time = today.getHours() + ":" + String(today.getMinutes()).padStart(2, "0") + ":" + String(today.getSeconds()).padStart(2, "0") + " ";
 		document.getElementById('logs').innerHTML = time + arg.concat('\n', document.getElementById('logs').innerHTML)
 		// document.getElementById('logs').innerHTML += '\n' + arg;
 	})
