@@ -10,7 +10,7 @@ Go to [VICREO releases](https://github.com/JeffreyDavidsz/VICREO-listener/releas
 
 ## Donation
 Please consider a small donation if you are using this product on your productions and like it. It will help me collect some money for the yearly certificates from Apple and Windows (which cost over $300);
-[<img src="https://d1iczxrky3cnb2.cloudfront.net/button-small-blue.png"/>](https://donorbox.org/vicreo-listener?default_interval=o&amount=25){:target="_blank"}
+[<img src="https://d1iczxrky3cnb2.cloudfront.net/button-small-blue.png"/>](https://donorbox.org/vicreo-listener?default_interval=o&amount=25)
 
 ## Installation
 
