@@ -300,6 +300,7 @@ function processKeyDataOSX(key, modifiers) {
 	for (item in modifiers) {
 		if (modifiers[item] == 'cmd') { modifiers[item] = 'command' };
 		if (modifiers[item] == 'ctrl') { modifiers[item] = 'control' };
+		if (modifiers[item] == 'alt') { modifiers[item] = 'option' };
 		modifiersInString += modifiers[item] + ' down,';
 	}
 	modifiersInString = modifiersInString.substring(0, modifiersInString.length - 1)
