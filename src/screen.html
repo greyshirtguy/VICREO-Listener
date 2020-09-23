@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Vicreo Listener</title>
+
+	<!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+	<meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+	<style>
+		body {
+			background-color: rgb(0, 0, 0);
+			background-image: url("./img/png/256x256.png");
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+			background-position: bottom;
+			background-size: 60%;
+			color: rgba(255, 255, 255, 0.9);
+			padding-left: 20px;
+			padding-right: 20px;
+			padding-top: 2px;
+		}
+
+		h1 {
+			font-size: 50px;
+			margin-bottom: 5px;
+			margin-top: 0px;
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+		}
+
+		h3 {
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+			margin-bottom: 10px;
+		}
+
+		p {
+			margin-top: 10px;
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+		}
+
+		#port {
+			height: 36px;
+			width: 110px;
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+			text-align: center;
+			font-size: 20px;
+			background-color: black;
+			color: white;
+			border-color: #009ee0;
+			border-radius: 5px;
+			border-style: solid;
+			border-width: 3px;
+			padding: 0px;
+			margin: 0px;
+
+		}
+
+		#port:focus {
+			outline: none;
+			border-color: #e2007a;
+		}
+
+		#changeBtn {
+			height: 42px;
+			width: 120px;
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+			text-align: center;
+			font-weight: bold;
+			font-size: 20px;
+			background-color: #009ee0;
+			color: white;
+			border-color: #009ee0;
+			border-radius: 5px;
+			border-style: solid;
+			border-width: 3px;
+		}
+
+		#changeBtn:hover {
+
+			cursor: pointer;
+			border-color: #e2007a;
+			background: #e2007a;
+		}
+
+		#changeBtn:active {
+			transform: scale(.9, .9);
+			border-color: #e2007a;
+			background: #e2007a;
+		}
+
+		#changeBtn:focus {
+			outline: 0
+		}
+
+		::selection {
+			background: #e2007a;
+		}
+
+		::-moz-selection {
+			background: #e2007a;
+		}
+
+		#donateBtn {
+			position: fixed;
+			bottom: 0px;
+			right: 0px;
+			background: url(./img/red_logo.png) no-repeat 18px;
+			color: #fff;
+			text-decoration: none;
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+			display: inline-block;
+			font-size: 16px;
+			padding: 13px 17px;
+			padding-left: 56px;
+		}
+
+		#donateBtn:hover {
+			cursor: pointer;
+			border-color: #e2007a;
+		}
+
+		textarea {
+			resize: none; 
+			padding: 5px;
+		}
+	</style>
+</head>
+<h1><label id="version">Welcome!</label></h1>
+<p>You can close this screen, and the app will remain open in the system tray (Windows) or the menu bar (macOS).</p>
+<p>The app will listen on port 10001 by default, but you can change that here:</p>
+<h3>Port number</h3>
+<input id="port" class="form-control text-input" value="">
+<input id="changeBtn" type="button" value="Change">
+<br>
+<p>Logs:</p>
+<textarea id='logs' rows="8" cols="40" disabled wrap="off"></textarea>
+<a id="donateBtn" href="https://donorbox.org/vicreo-listener?default_interval=o&amount=25">Donate</a>
+</body>
+
+</html>
+
+<script>
+
+	const { ipcRenderer } = require('electron')
+
+	ipcRenderer.on('initport', (event, arg) => {
+		document.getElementById('port').value = arg;
+	})
+
+	ipcRenderer.on('log', (event, arg) => {
+		let today = new Date();
+		let time = today.getHours() + ":" + String(today.getMinutes()).padStart(2, "0") + ":" + String(today.getSeconds()).padStart(2, "0") + " ";
+		document.getElementById('logs').innerHTML = time + arg.concat('\n', document.getElementById('logs').innerHTML)
+		// document.getElementById('logs').innerHTML += '\n' + arg;
+	})
+
+	ipcRenderer.on('version', (event, arg) => {
+		document.getElementById('version').innerHTML = arg;
+	})
+
+	document.getElementById("changeBtn").addEventListener("click", function () {
+		var port = document.getElementById("port").value;
+		ipcRenderer.send('changePort', port)
+	});
+
+</script>

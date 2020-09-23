@@ -1,0 +1,33 @@
+language: node_js
+node_js: "12"
+os:
+- linux
+- osx
+dist: bionic
+osx_image: xcode10.2
+
+before_install: 
+  - "if [ \"$TRAVIS_OS_NAME\" = osx ]; then chmod +x ./add-osx-cert.sh; fi"
+  - "if [ \"$TRAVIS_OS_NAME\" = osx ]; then ./add-osx-cert.sh; fi"
+
+cache:
+  npm: true
+  yarn: true
+  directories:
+  - $HOME/.cache/electron
+
+addons:
+  apt:
+    packages:
+    - fakeroot
+    - rpm
+    - libxtst-dev
+    - libpng++-dev
+
+branches:
+  only:
+  - master
+  - /^v\d+\.\d+\.\d+/
+
+script:
+- npm run release

@@ -1,0 +1,47 @@
+{
+  "name": "VICREO-Listener",
+  "productName": "VICREO-Listener",
+  "version": "2.1.0",
+  "description": "Keyboard ",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "release": "electron-forge publish",
+    "devstart": "electromon ./src/index.js",
+    "rebuild": "electron-rebuild -f -w ./src/index.js",
+    "lint": "echo \"No linting configured\""
+  },
+  "keywords": [
+    "keyboard emulator",
+    "hotkey"
+  ],
+  "author": {
+    "name": "Jeffrey Davidsz",
+    "email": "jeffrey.davidsz@vicreo.eu"
+  },
+  "license": "MIT",
+  "config": {
+    "forge": "./forge.config.js"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "electron-notarize": "^1.0.0",
+    "electron-squirrel-startup": "^1.0.0",
+    "electron-store": "^6.0.0",
+    "robotjs": "^0.6.0",
+    "run-applescript": "^4.0.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "6.0.0-beta.51",
+    "@electron-forge/maker-deb": "6.0.0-beta.51",
+    "@electron-forge/maker-rpm": "6.0.0-beta.51",
+    "@electron-forge/maker-squirrel": "6.0.0-beta.51",
+    "@electron-forge/maker-zip": "6.0.0-beta.51",
+    "@electron-forge/publisher-github": "^6.0.0-beta.51",
+    "electromon": "^1.0.10",
+    "electron": "9.0.4",
+    "electron-rebuild": "^1.11.0"
+  }
+}

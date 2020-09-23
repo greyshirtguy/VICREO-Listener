@@ -1,0 +1,50 @@
+platform:
+- x64
+
+environment:
+  nodejs_version: "12"
+
+cache:
+- '%APPDATA%\npm-cache'
+- '%APPDATA%\Yarn'
+- '%USERPROFILE%\.electron'
+- node_modules
+
+branches:
+  only:
+  - master
+  - /^v\d+\.\d+\.\d+/
+
+skip_tags: true
+
+install:
+- ps: Install-Product node $env:nodejs_version $env:platform
+- set PATH=%APPDATA%\yarn;%PATH%
+- yarn install
+
+test_script:
+- node --version
+- npm --version
+- yarn --version
+- yarn run lint
+- if %APPVEYOR_REPO_TAG% EQU false yarn make
+
+build_script:
+- echo %CERTIFICATE_WINDOWS_PFX% | base64.exe -di > windows_signing.pfx
+- IF %APPVEYOR_REPO_TAG% EQU true yarn release
+
+artifacts:
+  - path: out/make/squirrel.windows/x64/*.exe
+    name: Installer
+
+deploy:
+  release: product release of VICREO
+  description: ''
+  provider: GitHub
+  auth_token:
+    secure: QHN3cMjhdFlzAJorXZXnE0smUAC8K+VCm5lyB/L7Zwe+ADZc7JdxKkDBF/NDZPQ6
+  draft: true
+  prerelease: false
+  Force update: true
+  on:
+    branch: master
